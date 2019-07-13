@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">YouFlix</string>
+    <string name="inicio">Início</string>
+    <string name="buscar">Buscar</string>
+    <string name="em_breve">Em breve</string>
+    <string name="downloads">Downloads</string>
+    <string name="mais">Mais</string>
+    <string name="videos">Vídeos</string>
+    <string name="sobre">Sobre</string>
+    <string name="minha_lista">Minha lista</string>
+</resources>
