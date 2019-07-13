@@ -1,20 +1,12 @@
 package com.paradoxo.youflix;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.View;
-import android.widget.Adapter;
 
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.paradoxo.youflix.adapter.AdapterTeste;
 
 import java.util.ArrayList;
@@ -27,6 +19,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        configurarRecycler();
+        initToolbar();
+
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+    }
+
+    private void configurarRecycler() {
         List<String> lista = new ArrayList<>();
         for (int i = 0; i != 50; i++) {
             lista.add("Item" + i);
@@ -35,9 +36,6 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recycler);
         AdapterTeste adapterTeste = new AdapterTeste(lista);
         recyclerView.setAdapter(adapterTeste);
-
-        initToolbar();
-
     }
 
     private void initToolbar() {

@@ -4,9 +4,11 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
-    <color name="colorPrimaryDarkOverlay">#BF000000</color>
-
     <color name="colorOverlay1">#40000000</color>
     <color name="colorOverlay2">#74000000</color>
+    <color name="colorOverlay3">#BF000000</color>
+
+    <color name="cinza_5">#999999</color>
     <color name="cinza_6">#787878</color>
+
 </resources>

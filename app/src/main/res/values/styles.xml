@@ -10,7 +10,7 @@
     </style>
 
     <style name="Theme.AppCompat.Overlay" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimaryDark">@color/colorPrimaryDarkOverlay</item>
+        <item name="colorPrimaryDark">@color/colorOverlay3</item>
 
     </style>
 
