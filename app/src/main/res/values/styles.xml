@@ -11,6 +11,7 @@
 
     <style name="Theme.AppCompat.Overlay" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimaryDark">@color/colorPrimaryDarkOverlay</item>
+
     </style>
 
 </resources>
