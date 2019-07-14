@@ -11,7 +11,12 @@
 
     <style name="Theme.AppCompat.Overlay" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimaryDark">@color/colorOverlay3</item>
-
     </style>
+
+    <style name="AppTheme.Ripple">
+        <item name="colorControlHighlight">@android:color/white</item>
+        <item name="android:background">?selectableItemBackgroundBorderless</item>
+    </style>
+
 
 </resources>

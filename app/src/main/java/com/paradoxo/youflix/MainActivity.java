@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -22,8 +23,6 @@ public class MainActivity extends AppCompatActivity {
         configurarRecycler();
         initToolbar();
 
-
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
     }
 

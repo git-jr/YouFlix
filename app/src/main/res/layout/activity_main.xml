@@ -7,18 +7,6 @@
     android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/colorPrimary"
-        app:itemIconTint="@drawable/bottom_navigation_colors"
-        app:itemTextAppearanceActive="@style/TextAppearance.AppCompat.Caption"
-        app:itemTextAppearanceInactive="@style/TextAppearance.AppCompat.Caption"
-        app:itemTextColor="@drawable/bottom_navigation_colors"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/menu_bottom_navigation" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
@@ -27,6 +15,86 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         tools:listitem="@layout/item_teste" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="bottom"
+        android:background="@color/colorPrimary"
+        android:gravity="center">
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:clickable="true"
+            android:drawableTop="@drawable/ic_home"
+            android:drawablePadding="0dp"
+            android:gravity="center"
+            android:text="@string/inicio"
+            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            android:theme="@style/AppTheme.Ripple"
+            tools:ignore="KeyboardInaccessibleWidget,SmallSp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:clickable="true"
+            android:drawableTop="@drawable/ic_home"
+            android:drawablePadding="0dp"
+            android:gravity="center"
+            android:text="@string/buscar"
+            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            android:theme="@style/AppTheme.Ripple"
+            tools:ignore="KeyboardInaccessibleWidget,SmallSp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:clickable="true"
+            android:drawableTop="@drawable/ic_home"
+            android:drawablePadding="0dp"
+            android:gravity="center"
+            android:text="@string/em_breve"
+            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            android:theme="@style/AppTheme.Ripple"
+            tools:ignore="KeyboardInaccessibleWidget,SmallSp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:clickable="true"
+            android:drawableTop="@drawable/ic_home"
+            android:drawablePadding="0dp"
+            android:gravity="center"
+            android:text="@string/downloads"
+            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            android:theme="@style/AppTheme.Ripple"
+            tools:ignore="KeyboardInaccessibleWidget,SmallSp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:clickable="true"
+            android:drawableTop="@drawable/ic_home"
+            android:drawablePadding="0dp"
+            android:gravity="center"
+            android:text="@string/mais"
+            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            android:theme="@style/AppTheme.Ripple"
+            tools:ignore="KeyboardInaccessibleWidget,SmallSp" />
+
+    </LinearLayout>
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
