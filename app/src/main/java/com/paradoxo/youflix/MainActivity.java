@@ -2,12 +2,12 @@ package com.paradoxo.youflix;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.paradoxo.youflix.adapter.AdapterTeste;
 
 import java.util.ArrayList;
@@ -28,13 +28,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void configurarRecycler() {
         List<String> lista = new ArrayList<>();
-        for (int i = 0; i != 50; i++) {
+        for (int i = 0; i != 10; i++) {
             lista.add("Item" + i);
         }
 
         RecyclerView recyclerView = findViewById(R.id.recycler);
-        AdapterTeste adapterTeste = new AdapterTeste(lista);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        AdapterTeste adapterTeste = new AdapterTeste(lista, this);
         recyclerView.setAdapter(adapterTeste);
+        recyclerView.smoothScrollToPosition(8);
     }
 
     private void initToolbar() {

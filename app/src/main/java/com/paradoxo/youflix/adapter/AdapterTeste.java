@@ -1,8 +1,10 @@
 package com.paradoxo.youflix.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,24 +16,26 @@ import java.util.List;
 
 public class AdapterTeste extends RecyclerView.Adapter {
     private List<String> items;
+    private Context context;
 
-    public AdapterTeste(List<String> lista) {
+    public AdapterTeste(List<String> lista, Context context) {
         items = lista;
+        this.context = context;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView itemTextView;
+        ImageView itemImageView;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            itemTextView = itemView.findViewById(R.id.itemTextView);
+            itemImageView = itemView.findViewById(R.id.itemImageView);
         }
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_teste, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_video, parent, false);
         return new ViewHolder(view);
     }
 
@@ -40,10 +44,11 @@ public class AdapterTeste extends RecyclerView.Adapter {
         final String item = items.get(position);
 
         ViewHolder viewHolder = (ViewHolder) holder;
-        viewHolder.itemTextView.setText(item);
+        viewHolder.itemImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.img_toolbar));
 
     }
 
+    
     @Override
     public int getItemCount() {
         return items.size();
