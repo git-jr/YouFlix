@@ -3,10 +3,10 @@
     <item>
         <shape>
             <gradient
-                android:gradientRadius="100%p"
-                android:startColor="@color/colorOverlay1"
-                android:endColor="@color/colorOverlay2"
-                android:type="radial" />
+                android:angle="270"
+                android:startColor="@color/colorOverlay0"
+                android:endColor="@color/cinza_bg"
+                android:type="linear" />
         </shape>
 
     </item>

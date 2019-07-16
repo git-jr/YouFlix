@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="254dp"
     android:layout_height="143dp"
-    android:layout_margin="8dp">
+    android:layout_marginEnd="8dp">
 
     <ImageView
         android:id="@+id/itemImageView"
