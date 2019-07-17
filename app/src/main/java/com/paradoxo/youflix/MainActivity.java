@@ -1,16 +1,15 @@
 package com.paradoxo.youflix;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
 import com.paradoxo.youflix.adapter.AdapterTeste;
+import com.paradoxo.youflix.fragment.MainFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +23,8 @@ public class MainActivity extends AppCompatActivity {
 
         adicionarFragmentPrincipal();
 
-
         //configurarRecycler();
         //initToolbar();
-
 
     }
 
@@ -35,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
 
-//        MainFragment mainFragment = new MainFragment();
-        SearchFragment mainFragment = new SearchFragment();
+        MainFragment mainFragment = new MainFragment();
+//        SearchFragment mainFragment = new SearchFragment();
         fragmentTransaction.add(R.id.framentPrincipal,mainFragment);
         fragmentTransaction.commit();
     }

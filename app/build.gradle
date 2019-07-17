@@ -17,6 +17,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LINCENSE'
+        exclude 'META-INF/LINCENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+
+    }
 }
 
 dependencies {
@@ -30,5 +39,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation 'com.google.android.material:material:1.0.0'
+
+    implementation 'com.google.apis:google-api-services-youtube:v3-rev212-1.25.0'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'joda-time:joda-time:2.10.1'
+
 
 }
