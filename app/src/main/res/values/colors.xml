@@ -9,9 +9,10 @@
     <color name="colorOverlay2">#74000000</color>
     <color name="colorOverlay3">#BF000000</color>
 
-
     <color name="cinza_5">#999999</color>
     <color name="cinza_6">#787878</color>
+    <color name="cinza_7">#353535</color>
     <color name="cinza_bg">#1a1a1a</color>
+
 
 </resources>

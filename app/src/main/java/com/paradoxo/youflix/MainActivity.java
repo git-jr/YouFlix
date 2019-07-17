@@ -35,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
 
-        MainFragment mainFragment = new MainFragment();
+//        MainFragment mainFragment = new MainFragment();
+        SearchFragment mainFragment = new SearchFragment();
         fragmentTransaction.add(R.id.framentPrincipal,mainFragment);
         fragmentTransaction.commit();
     }
