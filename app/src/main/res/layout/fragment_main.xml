@@ -141,7 +141,7 @@
                     android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/VideosRecentes"
+                    android:id="@+id/videosRecentesRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="143dp"
                     app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
@@ -153,10 +153,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:layout_marginBottom="8dp"
-                    android:text="Playlist 1"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                     android:textColor="@android:color/white"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="Playlist 1" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler1"
@@ -172,10 +172,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:layout_marginBottom="8dp"
-                    android:text="Playlist 2"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                     android:textColor="@android:color/white"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="Playlist 2" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler2"
@@ -183,7 +183,6 @@
                     android:layout_height="143dp"
                     app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
                     tools:listitem="@layout/item_video" />
-
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

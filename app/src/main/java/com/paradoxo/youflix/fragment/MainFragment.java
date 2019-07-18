@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.paradoxo.youflix.R;
 import com.paradoxo.youflix.modelo.Canal;
@@ -23,6 +24,7 @@ import com.paradoxo.youflix.util.YTlist;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.List;
 
 
 public class MainFragment extends Fragment {
@@ -42,9 +44,8 @@ public class MainFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_main, container, false);
 
         carregarBanner();
-
-        listarPlayLists();
-        listarVideosRecentes();
+        carregarPlaylist();
+        carregarVideosRecentes();
 
 
         return view;
@@ -105,6 +106,15 @@ public class MainFragment extends Fragment {
         loadCanal.execute();
     }
 
+    private void carregarPlaylist() {
+        LoadPlaylists loadPlaylists = new LoadPlaylists();
+        loadPlaylists.execute();
+    }
+
+    private void carregarVideosRecentes() {
+        LoadVideos loadVideos = new LoadVideos();
+        loadVideos.execute();
+    }
 
     @SuppressLint("StaticFieldLeak")
     private class LoadCanal extends AsyncTask<Void, Void, Canal> {
@@ -128,6 +138,61 @@ public class MainFragment extends Fragment {
                 e.printStackTrace();
             }
         }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class LoadPlaylists extends AsyncTask<Void, Void, PaginaPlayList> {
+        @Override
+        protected PaginaPlayList doInBackground(Void... voids) {
+            try {
+                return YTlist.listaPlayLists(new PaginaPlayList(), false);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(PaginaPlayList paginaPlayList) {
+            super.onPostExecute(paginaPlayList);
+
+            if (paginaPlayList != null) {
+                for (PlayList playList : paginaPlayList.getPlayLists()) {
+                    Log.e("Nome PlayList", playList.getNome());
+                }
+                ((TextView) view.findViewById(R.id.playList1TextView)).setText(paginaPlayList.getPlayLists().get(0).getNome());
+                ((TextView) view.findViewById(R.id.playList2TextView)).setText(paginaPlayList.getPlayLists().get(1).getNome());
+            }
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class LoadVideos extends AsyncTask<Void, Void, PaginaVideo> {
+        @Override
+        protected PaginaVideo doInBackground(Void... voids) {
+            try {
+                return YTlist.listaVideos(new PaginaVideo(), false);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(PaginaVideo paginaVideo) {
+            super.onPostExecute(paginaVideo);
+
+            if (paginaVideo != null) {
+                for (Video video : paginaVideo.getVideos()) {
+                    Log.e("Título vídeo", video.getTitulo());
+                    configurarRecylerVideos(paginaVideo.getVideos());
+                }
+            }
+        }
+    }
+
+    private void configurarRecylerVideos(List<Video> videos) {
+        RecyclerView recyclerView = view.findViewById(R.id.videosRecentesRecyclerView);
     }
 
 }
