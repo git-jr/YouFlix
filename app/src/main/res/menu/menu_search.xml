@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/mic"
-        android:icon="@drawable/ic_home"
-        app:showAsAction="always"
-        android:title="mic" />
+        android:icon="@drawable/ic_mic"
+        android:title="mic"
+        android:visible="true"
+        app:showAsAction="always" />
+
 </menu>

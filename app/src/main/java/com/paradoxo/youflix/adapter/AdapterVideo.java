@@ -12,24 +12,26 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.paradoxo.youflix.R;
+import com.paradoxo.youflix.modelo.Video;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class AdapterTeste extends RecyclerView.Adapter {
-    private List<String> items;
+public class AdapterVideo extends RecyclerView.Adapter {
+    private List<Video> videos;
     private Context context;
 
-    public AdapterTeste(List<String> lista, Context context) {
-        items = lista;
+    public AdapterVideo(List<Video> videos, Context context) {
+        this.videos = videos;
         this.context = context;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView itemImageView;
+        ImageView thumbnailImageView;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            itemImageView = itemView.findViewById(R.id.itemImageView);
+            thumbnailImageView = itemView.findViewById(R.id.itemImageView);
         }
     }
 
@@ -42,16 +44,17 @@ public class AdapterTeste extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        final String item = items.get(position);
+        final Video video = videos.get(position);
 
         ViewHolder viewHolder = (ViewHolder) holder;
-        viewHolder.itemImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.img_toolbar));
+        //viewHolder.thumbnailImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.img_toolbar));
+        Picasso.with(context).load(video.getThumbnail().getUrl()).placeholder(context.getResources().getDrawable(R.color.cinza_5)).into(viewHolder.thumbnailImageView);
 
     }
 
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return videos.size();
     }
 }

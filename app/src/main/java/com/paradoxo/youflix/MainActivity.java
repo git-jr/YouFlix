@@ -8,8 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
-import com.paradoxo.youflix.adapter.AdapterTeste;
+import com.paradoxo.youflix.adapter.AdapterVideo;
 import com.paradoxo.youflix.fragment.MainFragment;
+import com.paradoxo.youflix.fragment.SearchFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,34 +33,10 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
 
-        MainFragment mainFragment = new MainFragment();
-//        SearchFragment mainFragment = new SearchFragment();
-        fragmentTransaction.add(R.id.framentPrincipal,mainFragment);
+//        MainFragment mainFragment = new MainFragment();
+        SearchFragment mainFragment = new SearchFragment();
+        fragmentTransaction.add(R.id.framentPrincipal, mainFragment);
         fragmentTransaction.commit();
-    }
-
-    private void configurarRecycler() {
-        List<String> lista = new ArrayList<>();
-        for (int i = 0; i != 10; i++) {
-            lista.add("Item" + i);
-        }
-
-        RecyclerView recyclerView = findViewById(R.id.minhaListaRecycler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        AdapterTeste adapterTeste = new AdapterTeste(lista, this);
-        recyclerView.setAdapter(adapterTeste);
-        recyclerView.smoothScrollToPosition(8);
-
-        RecyclerView recyclerView1 = findViewById(R.id.recycler1);
-        recyclerView1.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        recyclerView1.setAdapter(adapterTeste);
-        recyclerView1.smoothScrollToPosition(8);
-
-        RecyclerView recyclerView2 = findViewById(R.id.recycler2);
-        recyclerView2.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        recyclerView2.setAdapter(adapterTeste);
-        recyclerView2.smoothScrollToPosition(8);
-
     }
 
 

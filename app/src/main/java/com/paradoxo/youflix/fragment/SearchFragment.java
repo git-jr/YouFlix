@@ -29,14 +29,16 @@ public class SearchFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_search, container, false);
 
         Toolbar toolbar = view.findViewById(R.id.searchToolbar);
-        setHasOptionsMenu(true);
+        toolbar.inflateMenu(R.menu.menu_search);
+        // setHasOptionsMenu(true);
 
         return view;
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_main, menu);
         super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        // inflater.inflate(R.menu.menu_search, menu);
     }
 }

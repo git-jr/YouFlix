@@ -107,84 +107,14 @@
             android:scrollingCache="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/playListMinhListaTextViem"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/minha_lista"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold" />
-
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/minhaListaRecycler"
+                    android:id="@+id/mainRecycler"
                     android:layout_width="match_parent"
-                    android:layout_height="143dp"
+                    android:layout_height="match_parent"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-                    tools:listitem="@layout/item_video" />
+                    tools:listitem="@layout/item_playlist" />
 
-                <TextView
-                    android:id="@+id/tituloVideosRecentesTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/videos_recentes"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/videosRecentesRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="143dp"
-                    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-                    tools:listitem="@layout/item_video" />
-
-                <TextView
-                    android:id="@+id/playList1TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginBottom="8dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    tools:text="Playlist 1" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler1"
-                    android:layout_width="match_parent"
-                    android:layout_height="143dp"
-                    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-                    tools:listitem="@layout/item_video" />
-
-
-                <TextView
-                    android:id="@+id/playList2TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginBottom="8dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    tools:text="Playlist 2" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler2"
-                    android:layout_width="match_parent"
-                    android:layout_height="143dp"
-                    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-                    tools:listitem="@layout/item_video" />
-
-            </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

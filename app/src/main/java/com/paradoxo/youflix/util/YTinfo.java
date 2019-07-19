@@ -27,7 +27,7 @@ public class YTinfo {
     private final HttpTransport httpTransport = new NetHttpTransport();
 
     private static String sha1 = "default";
-    private static String chave = "AIzaSyAbGlNFbel8iAGoDPPNZZfVhM0Y02VFvcY";
+    private static String chave = "AIzaSyCcLnjFEqUlSfne5cDMAFxGcdZIYCh_0cY";//"AIzaSyAbGlNFbel8iAGoDPPNZZfVhM0Y02VFvcY";
     private static String channelId = "UCYETxCTVSpVOc1TP5KP0pMg"; // Canal Paradoxo: "UCB1knfRXbQLlmz2HrbdHO7Q";
     private static String pacote = "default";
     private YouTube youtube;
@@ -99,8 +99,12 @@ public class YTinfo {
             }).setApplicationName(pacote).build();
 
             YouTube.Channels.List search = youtube.channels().list("id,snippet,statistics,BrandingSettings");
-            search.setId(idCanal);
-            search.setId(channelId);
+
+            if (idCanal != null) {
+                search.setId(idCanal);
+            } else {
+                search.setId(channelId);
+            }
             search.setKey(chave);
 
             ChannelListResponse busca = search.execute();
@@ -127,5 +131,35 @@ public class YTinfo {
         }
         return canal;
     }
+
+    public Canal carregarBanner() {
+        Canal canal = new Canal();
+        try {
+            youtube = new YouTube.Builder(httpTransport, jsonFactory, new HttpRequestInitializer() {
+                public void initialize(HttpRequest request) {
+                    request.getHeaders().set("X-Android-Package", pacote);
+                    request.getHeaders().set("X-Android-Cert", sha1);
+                }
+            }).setApplicationName(pacote).build();
+
+            YouTube.Channels.List search = youtube.channels().list("BrandingSettings");
+            search.setFields("items(brandingSettings/image(bannerTvHighImageUrl))");
+            search.setId(channelId);
+            search.setKey(chave);
+
+            ChannelListResponse busca = search.execute();
+            List<Channel> conteudoVideo = busca.getItems();
+
+            if (conteudoVideo != null) {
+                canal.setBanner(busca.getItems().get(0).getBrandingSettings().getImage().getBannerTvHighImageUrl());
+
+            }
+        } catch (Exception e) {
+            Log.e("TAG", "Erro ao carregar dados do canal");
+            e.printStackTrace();
+        }
+        return canal;
+    }
+
 
 }

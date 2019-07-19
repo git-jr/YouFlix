@@ -14,6 +14,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
+            android:screenOrientation="portrait"
             android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.Overlay">
             <intent-filter>
