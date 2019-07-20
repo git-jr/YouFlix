@@ -17,4 +17,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="videos_recentes">Vídeos recentes</string>
     <string name="busque_por">Busque por série, filme genêro, etc.</string>
+    <string name="encontre_sua_historia">Encontre sua própria história.</string>
+    <string name="place_buscas">Busque séries para assistir no caminho para o trabalho, filmes para descontrair ou gêneros favoritos.</string>
+    <string name="nada_ainda">Nada aqui ainda</string>
 </resources>

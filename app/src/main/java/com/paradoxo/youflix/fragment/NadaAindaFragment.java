@@ -11,28 +11,19 @@ import androidx.fragment.app.Fragment;
 
 import com.paradoxo.youflix.R;
 
-public class SearchFragment extends Fragment {
+public class NadaAindaFragment extends Fragment {
 
 
     private View view;
 
-    public SearchFragment() {
+    public NadaAindaFragment() {
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_search, container, false);
-
-        configurarToolbar();
-
+        view = inflater.inflate(R.layout.fragment_nada_ainda, container, false);
         return view;
-    }
-
-    private void configurarToolbar() {
-        Toolbar toolbar = view.findViewById(R.id.buscaToolbar);
-        toolbar.inflateMenu(R.menu.menu_search);
-
     }
 
 }

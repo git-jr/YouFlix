@@ -12,7 +12,6 @@
         android:background="@color/cinza_bg"
         android:fitsSystemWindows="true">
 
-
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBar"
             android:layout_width="match_parent"
@@ -35,6 +34,7 @@
                     android:background="@color/cinza_bg"
                     android:fitsSystemWindows="true"
                     android:scaleType="centerCrop"
+                    android:src="@drawable/img_a_queima_roupa"
                     android:visibility="visible"
                     app:layout_collapseMode="parallax"
                     tools:ignore="ContentDescription"
@@ -107,13 +107,13 @@
             android:scrollingCache="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/mainRecycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-                    tools:listitem="@layout/item_playlist" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mainRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+                tools:listitem="@layout/item_playlist" />
 
         </androidx.core.widget.NestedScrollView>
 

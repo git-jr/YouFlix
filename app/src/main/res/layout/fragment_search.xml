@@ -6,35 +6,71 @@
     android:layout_height="match_parent"
     tools:context=".fragment.SearchFragment">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="?android:actionBarSize">
+        android:layout_height="match_parent"
+        android:background="@color/cinza_bg"
+        android:fitsSystemWindows="true">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/searchToolbar"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/buscaAppBar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/cinza_7"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
-            app:navigationIcon="@drawable/ic_busca">
+            android:layout_height="wrap_content">
 
-            <LinearLayout
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/buscaToolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/cinza_7"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                app:navigationIcon="@drawable/ic_busca">
 
-                <EditText
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorOverlay0"
-                    android:hint="@string/busque_por"
-                    android:textColor="@color/cinza_4"
-                    android:textColorHint="@color/cinza_4"
-                    android:textSize="14sp" />
-            </LinearLayout>
+                    android:layout_height="match_parent">
 
-        </androidx.appcompat.widget.Toolbar>
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorOverlay0"
+                        android:hint="@string/busque_por"
+                        android:textColor="@color/cinza_3"
+                        android:textColorHint="@color/cinza_5"
+                        android:textCursorDrawable="@drawable/color_cursor"
+                        android:textSize="14sp"
+                        tools:ignore="Autofill,TextFields" />
+                </LinearLayout>
+
+            </androidx.appcompat.widget.Toolbar>
 
 
-    </com.google.android.material.appbar.AppBarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/encontre_sua_historia"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/place_buscas"
+                android:textColor="@color/cinza_3"
+                android:textSize="15sp" />
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </FrameLayout>

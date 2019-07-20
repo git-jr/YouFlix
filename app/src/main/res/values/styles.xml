@@ -13,6 +13,10 @@
         <item name="colorPrimaryDark">@color/colorOverlay0</item>
     </style>
 
+    <style name="Theme.Red" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimaryDark">@android:color/holo_red_dark</item>
+    </style>
+
     <style name="AppTheme.Ripple">
         <item name="colorControlHighlight">@android:color/white</item>
         <item name="android:background">?selectableItemBackgroundBorderless</item>

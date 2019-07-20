@@ -3,40 +3,91 @@ package com.paradoxo.youflix;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
 
-import com.paradoxo.youflix.adapter.AdapterVideo;
 import com.paradoxo.youflix.fragment.MainFragment;
+import com.paradoxo.youflix.fragment.NadaAindaFragment;
 import com.paradoxo.youflix.fragment.SearchFragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        configurarTelaCheia();
         adicionarFragmentPrincipal();
-
-        //configurarRecycler();
-        //initToolbar();
+        configurarBottomViewCustomizado();
 
     }
 
-    private void adicionarFragmentPrincipal() {
-        FragmentManager supportFragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+    private void configurarBottomViewCustomizado() {
+        (findViewById(R.id.homeTextView)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adicionarFragmentPrincipal();
 
-//        MainFragment mainFragment = new MainFragment();
-        SearchFragment mainFragment = new SearchFragment();
-        fragmentTransaction.add(R.id.framentPrincipal, mainFragment);
-        fragmentTransaction.commit();
+            }
+        });
+
+
+        (findViewById(R.id.buscasTextView)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adicionarFragmentBuscas();
+            }
+        });
+
+        (findViewById(R.id.emBreveTextView)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adicionarFragmentNadaAinda();
+            }
+        });
+
+        (findViewById(R.id.downloadsTextView)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adicionarFragmentNadaAinda();
+            }
+        });
+
+        (findViewById(R.id.minhListaTextView)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adicionarFragmentNadaAinda();
+            }
+        });
+    }
+
+    private void configurarTelaCheia() {
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        );
+    }
+
+
+    private void adicionarFragmentPrincipal() {
+        MainFragment fragment = new MainFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.framentPrincipal, fragment).commit();
+
+    }
+
+    private void adicionarFragmentBuscas() {
+        SearchFragment fragment = new SearchFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.framentPrincipal, fragment).commit();
+
+    }
+
+    private void adicionarFragmentNadaAinda() {
+        NadaAindaFragment fragment = new NadaAindaFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.framentPrincipal, fragment).commit();
+
     }
 
 

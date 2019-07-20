@@ -48,7 +48,7 @@ public class AdapterVideo extends RecyclerView.Adapter {
 
         ViewHolder viewHolder = (ViewHolder) holder;
         //viewHolder.thumbnailImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.img_toolbar));
-        Picasso.with(context).load(video.getThumbnail().getUrl()).placeholder(context.getResources().getDrawable(R.color.cinza_5)).into(viewHolder.thumbnailImageView);
+        Picasso.with(context).load(video.getThumbnail().getUrl()).placeholder(context.getResources().getDrawable(R.color.cinza_4)).into(viewHolder.thumbnailImageView);
 
     }
 
