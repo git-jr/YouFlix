@@ -1,4 +1,7 @@
 <resources>
+    <string name="api_key">AIzaSyCcLnjFEqUlSfne5cDMAFxGcdZIYCh_0cY</string>
+
+
     <string name="app_name">YouFlix</string>
     <string name="inicio">Início</string>
     <string name="buscas">Buscas</string>
@@ -20,4 +23,6 @@
     <string name="encontre_sua_historia">Encontre sua própria história.</string>
     <string name="place_buscas">Busque séries para assistir no caminho para o trabalho, filmes para descontrair ou gêneros favoritos.</string>
     <string name="nada_ainda">Nada aqui ainda</string>
+    <string name="erro_carregar_player">Erro ao inicialziar player de vídeo:</string>
+    <string name="place_descricao_video">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
 </resources>

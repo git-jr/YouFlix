@@ -44,7 +44,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:layout_gravity="bottom"
-                    android:background="@drawable/bg_main_transparent" />
+                    android:background="@drawable/gradiente_cinza_inferior" />
 
 
                 <androidx.appcompat.widget.Toolbar

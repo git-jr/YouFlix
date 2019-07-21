@@ -21,7 +21,7 @@
                 android:id="@+id/buscaToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/cinza_7"
+                android:background="@color/cinza_8"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="?attr/actionBarTheme"
                 app:navigationIcon="@drawable/ic_busca">
@@ -36,7 +36,7 @@
                         android:background="@color/colorOverlay0"
                         android:hint="@string/busque_por"
                         android:textColor="@color/cinza_3"
-                        android:textColorHint="@color/cinza_5"
+                        android:textColorHint="@color/cinza_6"
                         android:textCursorDrawable="@drawable/color_cursor"
                         android:textSize="14sp"
                         tools:ignore="Autofill,TextFields" />

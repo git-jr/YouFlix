@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
         adicionarFragmentPrincipal();
         configurarBottomViewCustomizado();
 
+        startActivity(new Intent(this, ExibirVideoActivity.class));
     }
 
     private void configurarBottomViewCustomizado() {
@@ -89,6 +91,5 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.framentPrincipal, fragment).commit();
 
     }
-
 
 }
