@@ -42,5 +42,8 @@
         <item name="colorAccent">@color/vermelho_5</item>
     </style>
 
+    <style name="textoBold">
+        <![CDATA[<style name="TextBold">         <item name="android:textStyle">bold|italic</item>         <item name="android:textColor">#FFFFFF</item>     </style>]]></style>
+
 
 </resources>

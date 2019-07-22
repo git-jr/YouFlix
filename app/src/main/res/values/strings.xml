@@ -31,4 +31,5 @@
     <string name="url_do_canal">Url do canal</string>
     <string name="digite_uma_url_valida">Digite uma url válida, ex: https://www.youtube.com/user/Paradoxo10</string>
     <string name="digite_uma_api_key_valida">Digite uma chave válida</string>
+    <string name="tudo">Tudo</string>
 </resources>

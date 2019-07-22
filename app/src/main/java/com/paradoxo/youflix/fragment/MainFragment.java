@@ -1,20 +1,25 @@
 package com.paradoxo.youflix.fragment;
 
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.paradoxo.youflix.R;
 import com.paradoxo.youflix.adapter.AdapterPlayList;
+import com.paradoxo.youflix.enums.AbasEnum;
 import com.paradoxo.youflix.modelo.Canal;
 import com.paradoxo.youflix.modelo.PaginaPlayList;
 import com.paradoxo.youflix.modelo.PaginaVideo;
@@ -27,10 +32,31 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.util.List;
 
+import static com.paradoxo.youflix.enums.AbasEnum.ABA_VIDEO;
+import static com.paradoxo.youflix.enums.AbasEnum.NENHUMA_ABA;
+
 
 public class MainFragment extends Fragment {
-
+    private TextView videoTextView, sobreTextView, minhaListaTextView;
     private View view;
+    private AbasEnum abaAtual = AbasEnum.NENHUMA_ABA;
+
+    private OnItemListenerMain lister;
+
+    public interface OnItemListenerMain {
+        void onItemListerEscolherAba(AbasEnum abaAtual);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnItemListenerMain) {
+            lister = (OnItemListenerMain) context;
+
+        } else {
+            throw new ClassCastException();
+        }
+    }
 
     public MainFragment() {
     }
@@ -44,12 +70,86 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        carregarBanner();
-        carregarPlaylist();
+        //carregarBanner();
+        //carregarPlaylist();
         //carregarVideosRecentes();
+
+        videoTextView = view.findViewById(R.id.videosTextView);
+        sobreTextView = view.findViewById(R.id.sobreTextView);
+        minhaListaTextView = view.findViewById(R.id.minhListaTextView);
+
+        videoTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (abaAtual != ABA_VIDEO) {
+                    deslizarTextoVideo();
+                } else {
+                    lister.onItemListerEscolherAba(abaAtual);
+                }
+            }
+        });
 
 
         return view;
+    }
+
+
+    private void deslizarTextoVideo() {
+        abaAtual = ABA_VIDEO;
+        ObjectAnimator expandirX = ObjectAnimator.ofFloat(videoTextView, View.SCALE_X, 1.2f);
+        ObjectAnimator expandirY = ObjectAnimator.ofFloat(videoTextView, View.SCALE_Y, 1.2f);
+        expandirY.setDuration(100);
+        expandirX.setDuration(100);
+
+        final ObjectAnimator moverX = ObjectAnimator.ofFloat(videoTextView, "translationX", -35f);
+        moverX.setDuration(300);
+        moverX.setInterpolator(new AccelerateDecelerateInterpolator());
+
+        ObjectAnimator fadeOutSobre = ObjectAnimator.ofFloat(sobreTextView, View.ALPHA, 0, 0);
+        ObjectAnimator fadeOutMinhaLista = ObjectAnimator.ofFloat(minhaListaTextView, View.ALPHA, 0, 0);
+
+        expandirX.start();
+        expandirY.start();
+        fadeOutSobre.start();
+        fadeOutMinhaLista.start();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                moverX.start();
+                videoTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_triangulo_baixo, 0);
+            }
+        }, 100);
+
+    }
+
+    public void restaurarTextoVideo() {
+        abaAtual = NENHUMA_ABA;
+        ObjectAnimator expandirX = ObjectAnimator.ofFloat(videoTextView, View.SCALE_X, 1.0f);
+        ObjectAnimator expandirY = ObjectAnimator.ofFloat(videoTextView, View.SCALE_Y, 1.0f);
+        expandirY.setDuration(100);
+        expandirX.setDuration(100);
+
+        final ObjectAnimator moverX = ObjectAnimator.ofFloat(videoTextView, "translationX", 35f);
+        moverX.setDuration(300);
+        moverX.setInterpolator(new AccelerateDecelerateInterpolator());
+
+        ObjectAnimator fadeOutSobre = ObjectAnimator.ofFloat(sobreTextView, View.ALPHA, 0, 1);
+        ObjectAnimator fadeOutMinhaLista = ObjectAnimator.ofFloat(minhaListaTextView, View.ALPHA, 0, 1);
+
+        expandirX.start();
+        expandirY.start();
+        fadeOutSobre.start();
+        fadeOutMinhaLista.start();
+        videoTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                moverX.start();
+            }
+        }, 100);
+
     }
 
     private void carregarBanner() {

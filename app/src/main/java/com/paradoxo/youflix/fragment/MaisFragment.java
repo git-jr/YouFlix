@@ -50,7 +50,7 @@ public class MaisFragment extends Fragment {
     }
 
     public interface OnItemListener {
-        void onItemLister();
+        void onItemListerStartInterface();
     }
 
     @Override
@@ -92,10 +92,6 @@ public class MaisFragment extends Fragment {
         view.findViewById(R.id.urlInvalidoTextView).setVisibility(View.VISIBLE);
     }
 
-    private String getPrefString(String nomeShared) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
-        return sharedPreferences.getString(nomeShared, "");
-    }
 
     private void setPrefString(String texto, String nomeShared) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
@@ -154,7 +150,7 @@ public class MaisFragment extends Fragment {
 
     private void entrar() {
         liberarLayout();
-        listener.onItemLister();
+        listener.onItemListerStartInterface();
     }
 
     private void liberarLayout() {

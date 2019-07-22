@@ -3,22 +3,21 @@ package com.paradoxo.youflix;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.paradoxo.youflix.enums.AbasEnum;
 import com.paradoxo.youflix.fragment.MainFragment;
 import com.paradoxo.youflix.fragment.MaisFragment;
 import com.paradoxo.youflix.fragment.NadaAindaFragment;
 import com.paradoxo.youflix.fragment.SearchFragment;
-import com.paradoxo.youflix.modelo.Canal;
-import com.paradoxo.youflix.util.YTinfo;
 
-public class MainActivity extends AppCompatActivity implements MaisFragment.OnItemListener {
+public class MainActivity extends AppCompatActivity implements MaisFragment.OnItemListener, MainFragment.OnItemListenerMain {
 
     @SuppressLint("StaticFieldLeak")
     @Override
@@ -39,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements MaisFragment.OnIt
 
     private void iniciarInterface() {
         adicionarFragmentPrincipal();
-
         configurarBottomViewCustomizado();
     }
 
@@ -91,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements MaisFragment.OnIt
 
     private void adicionarFragmentPrincipal() {
         MainFragment fragment = new MainFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.framentPrincipal, fragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.framentPrincipal, fragment, "MainFrag").commit();
 
     }
 
@@ -119,7 +117,61 @@ public class MainActivity extends AppCompatActivity implements MaisFragment.OnIt
     }
 
     @Override
-    public void onItemLister() {
+    public void onItemListerStartInterface() {
         iniciarInterface();
+    }
+
+    @Override
+    public void onItemListerEscolherAba(AbasEnum abaAtual) {
+        escolherAba(abaAtual);
+    }
+
+
+    private void escolherAba(AbasEnum abaAtual) {
+        final LinearLayout layoutEscolherAbar = findViewById(R.id.layoutEscolherAbar);
+        layoutEscolherAbar.setVisibility(View.VISIBLE);
+
+        configurarListenerEscolhaAbas(layoutEscolherAbar);
+
+        switch (abaAtual) {
+            case ABA_VIDEO: {
+                ((TextView) findViewById(R.id.opcaoVideosTextView)).setTypeface(null, Typeface.BOLD);
+                break;
+            }
+            case NENHUMA_ABA: {
+                ((TextView) findViewById(R.id.opcaoTudoTextView)).setTypeface(null, Typeface.BOLD);
+                break;
+            }
+        }
+    }
+
+    private void configurarListenerEscolhaAbas(final LinearLayout layoutEscolherAbar) {
+        TextView tudoTextView = findViewById(R.id.opcaoTudoTextView);
+        TextView videosTextView = findViewById(R.id.opcaoVideosTextView);
+
+        tudoTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layoutEscolherAbar.setVisibility(View.GONE);
+                MainFragment fragment = (MainFragment) getSupportFragmentManager().findFragmentByTag("MainFrag");
+                if (fragment != null) {
+                    fragment.restaurarTextoVideo();
+                }
+            }
+        });
+
+        videosTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layoutEscolherAbar.setVisibility(View.GONE);
+            }
+        });
+
+        findViewById(R.id.fecharEscolherAbaImageView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layoutEscolherAbar.setVisibility(View.GONE);
+            }
+        });
     }
 }

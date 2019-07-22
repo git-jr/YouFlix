@@ -4,16 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.MainFragment">
+    tools:context=".fragment.MainFragment"
+    android:id="@+id/mainFrament">
+
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:background="@color/cinza_bg"
         android:id="@+id/layoutLoad"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/cinza_bg"
         android:fitsSystemWindows="true"
         android:visibility="visible"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <ProgressBar
             style="@style/ProgressBarCustom"
@@ -26,7 +28,6 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/layoutPrincipal"
-        tools:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/cinza_bg"
@@ -81,17 +82,18 @@
                         tools:ignore="RtlSymmetry">
 
                         <TextView
-                            android:id="@+id/videos"
+                            android:id="@+id/videosTextView"
                             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginStart="20dp"
                             android:layout_weight="3"
                             android:text="@string/videos"
                             android:textColor="@android:color/white" />
 
                         <TextView
-                            android:id="@+id/sobre"
+                            android:id="@+id/sobreTextView"
                             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -101,7 +103,7 @@
                             android:textColor="@android:color/white" />
 
                         <TextView
-                            android:id="@+id/minhLista"
+                            android:id="@+id/minhListaTextView"
                             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
