@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#121212</color>
-    <color name="colorPrimaryDark">#1a1a1a</color>
+    <color name="colorPrimaryDark">#999999</color>
     <color name="colorAccent">#D81B60</color>
 
     <color name="colorOverlay0">#00000000</color>
@@ -15,9 +15,13 @@
     <color name="cinza_5">#7f7f7f</color>
     <color name="cinza_6">#818181</color>
     <color name="cinza_7">#787878</color>
+    <color name="cinza_8b">#333333</color>
     <color name="cinza_8">#353535</color>
+    <color name="cinza_9">#454545</color>
     <color name="cinza_bg">#1a1a1a</color>
 
+    <color name="vermelho_5">#e50913</color>
+    <color name="laranja_3">#ffec7e02</color>
 
 
 </resources>

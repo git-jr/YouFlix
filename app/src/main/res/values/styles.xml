@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -20,6 +20,26 @@
     <style name="AppTheme.Ripple">
         <item name="colorControlHighlight">@android:color/white</item>
         <item name="android:background">?selectableItemBackgroundBorderless</item>
+    </style>
+
+    <style name="TextAppearance.App.TextInputLayout" parent="@android:style/TextAppearance">
+        <item name="colorControlActivated">@color/cinza_4</item>
+        <item name="colorControlHighlight">@color/cinza_4</item>
+        <item name="colorControlNormal">@color/cinza_4</item>
+        <item name="android:textColor">@color/cinza_4</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="BotaoLogin" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@color/vermelho_5</item>
+        <item name="colorPrimary">@color/vermelho_5</item>
+        <item name="android:padding">20dp</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="ProgressBarCustom" parent="Widget.AppCompat.ProgressBar">
+        <item name="colorAccent">@color/vermelho_5</item>
     </style>
 
 

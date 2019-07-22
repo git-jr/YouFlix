@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 
 
@@ -21,7 +22,18 @@ public class AdapterVideo extends RecyclerView.Adapter {
     private List<Video> videos;
     private Context context;
 
-    public AdapterVideo(List<Video> videos, Context context) {
+    private OnItemClickListener onItemClickListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(View v, String idVideo);
+    }
+
+    public void setonItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+
+    AdapterVideo(List<Video> videos, Context context) {
         this.videos = videos;
         this.context = context;
     }
@@ -47,9 +59,14 @@ public class AdapterVideo extends RecyclerView.Adapter {
         final Video video = videos.get(position);
 
         ViewHolder viewHolder = (ViewHolder) holder;
-        //viewHolder.thumbnailImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.img_toolbar));
         Picasso.with(context).load(video.getThumbnail().getUrl()).placeholder(context.getResources().getDrawable(R.color.cinza_4)).into(viewHolder.thumbnailImageView);
 
+        viewHolder.thumbnailImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClickListener.onItemClick(v, video.getId());
+            }
+        });
     }
 
 

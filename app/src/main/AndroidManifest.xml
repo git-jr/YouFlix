@@ -15,8 +15,10 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".ExibirVideoActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait">
+
+        </activity>
 
         <activity
             android:name=".MainActivity"

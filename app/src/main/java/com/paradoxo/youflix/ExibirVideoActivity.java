@@ -6,10 +6,13 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -35,13 +38,26 @@ public class ExibirVideoActivity extends YouTubeBaseActivity implements YouTubeP
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exibir_video);
 
+        configurarToolbar();
         configurarBotaoPlay();
         configurarPlayerYouTube();
 
+/*
+
         LoadDadosVideo loadDadosVideo = new LoadDadosVideo();
         loadDadosVideo.execute();
+*/
 
 
+    }
+
+    private void configurarToolbar() {
+        ((androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar)).setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void configurarBotaoPlay() {
@@ -54,11 +70,17 @@ public class ExibirVideoActivity extends YouTubeBaseActivity implements YouTubeP
     }
 
     public void exibirVideo() {
-
         inicializarVideo();
         findViewById(R.id.layoutPreview).setVisibility(View.GONE);
         youTubeView.setVisibility(View.VISIBLE);
 
+    }
+
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        super.onMenuItemSelected(featureId, item);
+        Log.e("id click", String.valueOf(featureId));
+        return true;
     }
 
     private void configurarPlayerYouTube() {
@@ -67,7 +89,7 @@ public class ExibirVideoActivity extends YouTubeBaseActivity implements YouTubeP
 
         Intent intent = getIntent();
         idVideo = intent.getStringExtra("idVideo");
-        idVideo = "wxThqXhBu68"; // Id de um vídeo de teste
+        //idVideo = "wxThqXhBu68"; // Id de um vídeo de teste
     }
 
     @Override

@@ -44,10 +44,9 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        /*
         carregarBanner();
-       carregarPlaylist();
-        carregarVideosRecentes();*/
+        carregarPlaylist();
+        //carregarVideosRecentes();
 
 
         return view;
@@ -95,6 +94,12 @@ public class MainFragment extends Fragment {
     @SuppressLint("StaticFieldLeak")
     private class LoadPlaylists extends AsyncTask<Void, Void, PaginaPlayList> {
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            esconderLayout();
+        }
+
+        @Override
         protected PaginaPlayList doInBackground(Void... voids) {
             try {
                 return YTlist.listaPlayLists(new PaginaPlayList(), false);
@@ -120,6 +125,8 @@ public class MainFragment extends Fragment {
 
                 configurarRecyclerPlaylists(paginaPlayList.getPlayLists());
             }
+
+            liberarLayout();
         }
     }
 
@@ -154,6 +161,16 @@ public class MainFragment extends Fragment {
     }
 
     private void configurarRecylerVideos(List<Video> videos) {
+    }
+
+    private void liberarLayout() {
+        (view.findViewById(R.id.layoutPrincipal)).setVisibility(View.VISIBLE);
+        (view.findViewById(R.id.layoutLoad)).setVisibility(View.GONE);
+    }
+
+    private void esconderLayout() {
+        (view.findViewById(R.id.layoutLoad)).setVisibility(View.VISIBLE);
+        (view.findViewById(R.id.layoutPrincipal)).setVisibility(View.GONE);
     }
 
 }

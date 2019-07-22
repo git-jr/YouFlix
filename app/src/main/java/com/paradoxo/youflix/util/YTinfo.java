@@ -161,5 +161,59 @@ public class YTinfo {
         return canal;
     }
 
+    public Canal verificarCanal(String apiKey, String idCanal) {
+        Canal canal = new Canal();
+        try {
+            youtube = new YouTube.Builder(httpTransport, jsonFactory, new HttpRequestInitializer() {
+                public void initialize(HttpRequest request) {
+                    request.getHeaders().set("X-Android-Package", pacote);
+                    request.getHeaders().set("X-Android-Cert", sha1);
+                }
+            }).setApplicationName(pacote).build();
+
+            YouTube.Channels.List search = youtube.channels().list("snippet");
+            search.setFields("items(id)");
+            search.setForUsername(idCanal);
+
+
+            search.setKey(apiKey);
+
+            ChannelListResponse busca = search.execute();
+
+            List<Channel> items = busca.getItems();
+
+            if (!items.isEmpty() && !items.get(0).getId().isEmpty()) {
+                canal.setId(items.get(0).getId());
+
+            } else {
+                search.setId(idCanal);
+                search.setForUsername(null);
+                // O usuário pode já estar inserido a url do canal no formato certo
+
+                busca.clear();
+                items.clear();
+                busca = search.execute();
+                items = busca.getItems();
+
+
+                if (!items.isEmpty() && !items.get(0).getId().isEmpty()) {
+                    canal.setId(items.get(0).getId());
+                } else {
+                    canal.setId(null);
+                    // Esse canal provavelmente não existe
+                }
+
+
+            }
+
+        } catch (Exception e) {
+            Log.e("TAG", "Erro ao carregar dados do canal");
+            e.printStackTrace();
+            return null;
+
+        }
+        return canal;
+    }
+
 
 }

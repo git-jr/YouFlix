@@ -7,6 +7,26 @@
     tools:context=".fragment.MainFragment">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:background="@color/cinza_bg"
+        android:id="@+id/layoutLoad"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:visibility="visible"
+        tools:visibility="visible">
+
+        <ProgressBar
+            style="@style/ProgressBarCustom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:theme="@style/ProgressBarCustom" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/layoutPrincipal"
+        tools:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/cinza_bg"

@@ -3,6 +3,7 @@ package com.paradoxo.youflix.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.paradoxo.youflix.ExibirVideoActivity;
 import com.paradoxo.youflix.R;
 import com.paradoxo.youflix.modelo.PaginaVideo;
 import com.paradoxo.youflix.modelo.PlayList;
@@ -97,11 +99,20 @@ public class AdapterPlayList extends RecyclerView.Adapter {
             super.onPostExecute(paginaVideo);
 
             if (paginaVideo != null) {
-                for (Video video : paginaVideo.getVideos()) {
-                    AdapterVideo adapterVideo = new AdapterVideo(paginaVideo.getVideos(), context);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
-                    recyclerView.setAdapter(adapterVideo);
-                }
+                // for (Video video : paginaVideo.getVideos()) {
+                AdapterVideo adapterVideo = new AdapterVideo(paginaVideo.getVideos(), context);
+                recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+                recyclerView.setAdapter(adapterVideo);
+
+                adapterVideo.setonItemClickListener(new AdapterVideo.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View v, String idVideo) {
+                        Intent intent = new Intent(context, ExibirVideoActivity.class);
+                        intent.putExtra("idVideo", idVideo);
+                        context.startActivity(intent);
+                    }
+                });
+                //}
             }
         }
     }
