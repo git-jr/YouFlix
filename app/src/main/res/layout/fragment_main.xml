@@ -2,10 +2,10 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainFrament"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.MainFragment"
-    android:id="@+id/mainFrament">
+    tools:context=".fragment.MainFragment">
 
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -36,7 +36,7 @@
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBar"
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="400dp"
             android:fitsSystemWindows="true"
             app:elevation="0dp">
 
@@ -55,7 +55,6 @@
                     android:background="@color/cinza_bg"
                     android:fitsSystemWindows="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/img_a_queima_roupa"
                     android:visibility="visible"
                     app:layout_collapseMode="parallax"
                     tools:ignore="ContentDescription"
@@ -135,7 +134,7 @@
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-                tools:listitem="@layout/item_playlist" />
+                tools:listitem="@layout/item_video_vertical" />
 
         </androidx.core.widget.NestedScrollView>
 

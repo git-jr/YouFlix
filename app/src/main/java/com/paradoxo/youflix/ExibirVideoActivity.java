@@ -42,11 +42,10 @@ public class ExibirVideoActivity extends YouTubeBaseActivity implements YouTubeP
         configurarBotaoPlay();
         configurarPlayerYouTube();
 
-/*
 
         LoadDadosVideo loadDadosVideo = new LoadDadosVideo();
         loadDadosVideo.execute();
-*/
+
 
 
     }

@@ -31,10 +31,12 @@
                     android:layout_height="match_parent">
 
                     <EditText
+                        android:id="@+id/buscaEditText"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@color/colorOverlay0"
                         android:hint="@string/busque_por"
+                        android:singleLine="true"
                         android:textColor="@color/cinza_3"
                         android:textColorHint="@color/cinza_6"
                         android:textCursorDrawable="@drawable/color_cursor"
@@ -47,15 +49,17 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-
         <LinearLayout
+            android:id="@+id/layoutPrincipal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:padding="24dp"
+            tools:visibility="visible">
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tituloMensagTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -65,6 +69,7 @@
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/conteudoMensagTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -72,5 +77,47 @@
                 android:textColor="@color/cinza_3"
                 android:textSize="15sp" />
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutLoad"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:visibility="gone"
+            tools:visibility="gone">
+
+            <ProgressBar
+                style="@style/ProgressBarCustom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:theme="@style/ProgressBarCustom" />
+
+        </LinearLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/layoutRecyler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:padding="8dp"
+            android:scrollbars="none"
+            android:scrollingCache="true"
+            android:visibility="gone"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:visibility="visible">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mainRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+                tools:listitem="@layout/item_video_vertical" />
+
+        </androidx.core.widget.NestedScrollView>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </FrameLayout>

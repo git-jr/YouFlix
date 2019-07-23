@@ -74,7 +74,21 @@ public class YTinfo {
                     video.setDuracao(" " + duracao + " ");
                 }
 
-                video.setThumbnail((Thumbnail) busca.getItems().get(0).getSnippet().getThumbnails().get("maxres"));
+                //video.setThumbnail((Thumbnail) busca.getItems().get(0).getSnippet().getThumbnails().get("maxres"));
+
+                String thumb;
+                try {
+                    thumb = ((Thumbnail) busca.getItems().get(0).getSnippet().getThumbnails().get("standard")).getUrl(); // Só pra testar um possivel erro casso não exitsa uma thumb desse tamanho
+                    video.setThumbnail((Thumbnail) busca.getItems().get(0).getSnippet().getThumbnails().get("standard"));
+                } catch (Exception e) { // Pro caso da miniatura ser de um vídeo privado, pegamos a miniatura padrão já que não existe uma de maxima qualidade
+                    try {
+                        thumb = ((Thumbnail) busca.getItems().get(0).getSnippet().getThumbnails().get("maxres")).getUrl(); // Só pra testar um possivel erro casso não exitsa uma thumb desse tamanho
+                        video.setThumbnail((Thumbnail) busca.getItems().get(0).getSnippet().getThumbnails().get("maxres"));
+                    } catch (Exception ex) {
+                        // Se os formatos de miniatura de vídeo acima não existirem vamos pegar o padrão mesmo
+                        video.setThumbnail((Thumbnail) busca.getItems().get(0).getSnippet().getThumbnails().get("default"));
+                    }
+                }
 
                 DateTime dataDoVideo = new DateTime(video.getData().getValue() + video.getData().getTimeZoneShift());
 

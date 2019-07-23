@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,6 @@ import com.paradoxo.youflix.ExibirVideoActivity;
 import com.paradoxo.youflix.R;
 import com.paradoxo.youflix.modelo.PaginaVideo;
 import com.paradoxo.youflix.modelo.PlayList;
-import com.paradoxo.youflix.modelo.Video;
 import com.paradoxo.youflix.util.YTlist;
 
 import java.io.IOException;
@@ -100,7 +98,7 @@ public class AdapterPlayList extends RecyclerView.Adapter {
 
             if (paginaVideo != null) {
                 // for (Video video : paginaVideo.getVideos()) {
-                AdapterVideo adapterVideo = new AdapterVideo(paginaVideo.getVideos(), context);
+                AdapterVideo adapterVideo = new AdapterVideo(paginaVideo.getVideos(), context, false);
                 recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
                 recyclerView.setAdapter(adapterVideo);
 

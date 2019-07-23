@@ -14,6 +14,8 @@ import com.google.api.services.youtube.model.Playlist;
 import com.google.api.services.youtube.model.PlaylistItem;
 import com.google.api.services.youtube.model.PlaylistItemListResponse;
 import com.google.api.services.youtube.model.PlaylistListResponse;
+import com.google.api.services.youtube.model.SearchListResponse;
+import com.google.api.services.youtube.model.SearchResult;
 import com.google.api.services.youtube.model.Thumbnail;
 
 import com.google.api.services.youtube.model.VideoListResponse;
@@ -30,7 +32,7 @@ import java.util.List;
 
 public class YTlist {
     private static YouTube youtube;
-    private static final long item_por_pg = 10;
+    private static final long item_por_pg = 2;
     private static final JsonFactory jsonFactory = new JacksonFactory();
     private static final HttpTransport httpTransport = new NetHttpTransport();
 
@@ -92,7 +94,7 @@ public class YTlist {
     }
 
     // Retorna uma lista de vídeos com todos os dados dos vídeos
-    public static PaginaVideo listaVideosFull(PaginaVideo paginaVideo, boolean recarregando) throws IOException {
+    private static PaginaVideo listaVideosFull(PaginaVideo paginaVideo, boolean recarregando) throws IOException {
         List<Video> videosCanal = listaPgCanal(paginaVideo, recarregando).getVideos();
 
         List<Video> videosComInfo = new ArrayList<>();
@@ -126,7 +128,7 @@ public class YTlist {
             }).setApplicationName(pacote).build();
 
             YouTube.Videos.List query = youtube.videos().list("id,snippet");
-            query.setFields("items(id,snippet/thumbnails)");
+            query.setFields("items(id,snippet/title,snippet/thumbnails)");
             query.setId(idVideo);
             query.setKey(chave);
 
@@ -135,6 +137,7 @@ public class YTlist {
 
             if (conteudoVideo != null) { // Se existir resultados:
                 video.setId(busca.getItems().get(0).getId());
+                video.setTitulo(busca.getItems().get(0).getSnippet().getTitle());
 
                 String thumb;
                 try {
@@ -257,6 +260,7 @@ public class YTlist {
     }
 
     // Retorna as informações de vídeo através do ID dele (uso inetrno desta classe)
+
     private static Video infoVideoFull(String idVideo) {
         Video video = new Video();
         try {
@@ -321,6 +325,54 @@ public class YTlist {
         }
         return video;
     }
+
+
+    public static PaginaVideo buscarVideosCanal(PaginaVideo paginaVideo, String parametroDeBusca) throws IOException {
+        youtube = new YouTube.Builder(httpTransport, jsonFactory, new HttpRequestInitializer() {
+            public void initialize(HttpRequest request) {
+                request.getHeaders().set("X-Android-Package", pacote);
+                request.getHeaders().set("X-Android-Cert", sha1);
+            }
+        }).setApplicationName(pacote).build();
+
+        YouTube.Search.List query = youtube.search().list("id,snippet");
+        query.setFields("items(id/videoId,snippet/title,snippet/thumbnails)");
+        query.setMaxResults((long) 5);
+        query.setKey(chave);
+        query.setChannelId(channelId);
+        query.setQ(parametroDeBusca);
+        query.setType("video");
+
+        SearchListResponse busca = query.execute();
+        List<SearchResult> listaVideos = busca.getItems();
+
+
+        if (listaVideos != null) { // Se existir resultados:
+            for (SearchResult lv : listaVideos) {
+                Video video = new Video();
+                video.setId(lv.getId().getVideoId());
+                video.setTitulo(lv.getSnippet().getTitle());
+
+                String thumb;
+                try {
+                    thumb = ((Thumbnail) lv.getSnippet().getThumbnails().get("standard")).getUrl(); // Só pra testar um possivel erro casso não exitsa uma thumb desse tamanho
+                    video.setThumbnail((Thumbnail) lv.getSnippet().getThumbnails().get("standard"));
+                } catch (Exception e) { // Pro caso da miniatura ser de um vídeo privado, pegamos a miniatura padrão já que não existe uma de maxima qualidade
+                    try {
+                        thumb = ((Thumbnail) lv.getSnippet().getThumbnails().get("maxres")).getUrl(); // Só pra testar um possivel erro casso não exitsa uma thumb desse tamanho
+                        video.setThumbnail((Thumbnail) lv.getSnippet().getThumbnails().get("maxres"));
+                    } catch (Exception ex) {
+                        // Se os formatos de miniatura de vídeo acima não existirem vamos pegar o padrão mesmo
+                        video.setThumbnail((Thumbnail) lv.getSnippet().getThumbnails().get("default"));
+                    }
+                }
+
+                paginaVideo.setVideos(video);
+            }
+        }
+        return paginaVideo;
+    }
+
 }
 
 

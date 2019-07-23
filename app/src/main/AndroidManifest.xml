@@ -16,7 +16,8 @@
         <activity
             android:name=".ExibirVideoActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Dark">
 
         </activity>
 

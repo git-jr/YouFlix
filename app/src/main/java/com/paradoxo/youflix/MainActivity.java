@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,6 +18,12 @@ import com.paradoxo.youflix.fragment.MainFragment;
 import com.paradoxo.youflix.fragment.MaisFragment;
 import com.paradoxo.youflix.fragment.NadaAindaFragment;
 import com.paradoxo.youflix.fragment.SearchFragment;
+import com.paradoxo.youflix.modelo.PaginaVideo;
+import com.paradoxo.youflix.modelo.Video;
+import com.paradoxo.youflix.util.YTlist;
+
+import java.io.IOException;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MaisFragment.OnItemListener, MainFragment.OnItemListenerMain {
 
@@ -25,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements MaisFragment.OnIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        configurarTelaCheia();
 
         if (getPrefString("apiKey").isEmpty() || getPrefString("urlChannel").isEmpty()) {
             MaisFragment fragment = new MaisFragment();
@@ -33,12 +40,13 @@ public class MainActivity extends AppCompatActivity implements MaisFragment.OnIt
         } else {
             iniciarInterface();
         }
-
     }
 
     private void iniciarInterface() {
+        configurarTelaCheia();
         adicionarFragmentPrincipal();
         configurarBottomViewCustomizado();
+
     }
 
     private void configurarBottomViewCustomizado() {

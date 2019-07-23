@@ -32,4 +32,6 @@
     <string name="digite_uma_url_valida">Digite uma url válida, ex: https://www.youtube.com/user/Paradoxo10</string>
     <string name="digite_uma_api_key_valida">Digite uma chave válida</string>
     <string name="tudo">Tudo</string>
+    <string name="nao_temos_essa_opcao">Que pena... Não temos essa opção.</string>
+    <string name="tente_buscar_outro">Tente buscar outro filme, série,ator, diretor ou gênnero.</string>
 </resources>

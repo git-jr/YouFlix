@@ -22,6 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="143dp"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-        tools:listitem="@layout/item_video" />
+        tools:listitem="@layout/item_video_horizontal" />
 
 </LinearLayout>

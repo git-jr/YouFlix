@@ -3,6 +3,7 @@ package com.paradoxo.youflix.fragment;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,8 +18,10 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.paradoxo.youflix.ExibirVideoActivity;
 import com.paradoxo.youflix.R;
 import com.paradoxo.youflix.adapter.AdapterPlayList;
+import com.paradoxo.youflix.adapter.AdapterVideo;
 import com.paradoxo.youflix.enums.AbasEnum;
 import com.paradoxo.youflix.modelo.Canal;
 import com.paradoxo.youflix.modelo.PaginaPlayList;
@@ -70,10 +73,16 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        //carregarBanner();
-        //carregarPlaylist();
-        //carregarVideosRecentes();
+        carregarBanner();
+        carregarPlaylist();
 
+        configurarBotoesToolbar();
+
+
+        return view;
+    }
+
+    private void configurarBotoesToolbar() {
         videoTextView = view.findViewById(R.id.videosTextView);
         sobreTextView = view.findViewById(R.id.sobreTextView);
         minhaListaTextView = view.findViewById(R.id.minhListaTextView);
@@ -83,14 +92,12 @@ public class MainFragment extends Fragment {
             public void onClick(View v) {
                 if (abaAtual != ABA_VIDEO) {
                     deslizarTextoVideo();
+                    carregarVideosRecentes();
                 } else {
                     lister.onItemListerEscolherAba(abaAtual);
                 }
             }
         });
-
-
-        return view;
     }
 
 
@@ -125,6 +132,8 @@ public class MainFragment extends Fragment {
 
     public void restaurarTextoVideo() {
         abaAtual = NENHUMA_ABA;
+        carregarPlaylist();
+
         ObjectAnimator expandirX = ObjectAnimator.ofFloat(videoTextView, View.SCALE_X, 1.0f);
         ObjectAnimator expandirY = ObjectAnimator.ofFloat(videoTextView, View.SCALE_Y, 1.0f);
         expandirY.setDuration(100);
@@ -170,11 +179,6 @@ public class MainFragment extends Fragment {
     @SuppressLint("StaticFieldLeak")
     private class LoadCanal extends AsyncTask<Void, Void, Canal> {
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
         protected Canal doInBackground(Void... voids) {
             YTinfo YTinfo = new YTinfo();
             return YTinfo.carregarBanner();
@@ -196,7 +200,7 @@ public class MainFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            esconderLayout();
+            //esconderLayout();
         }
 
         @Override
@@ -234,7 +238,6 @@ public class MainFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.mainRecycler);
         AdapterPlayList adapterPlayList = new AdapterPlayList(playLists, getContext());
         recyclerView.setAdapter(adapterPlayList);
-        recyclerView.smoothScrollToPosition(4);
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -261,6 +264,18 @@ public class MainFragment extends Fragment {
     }
 
     private void configurarRecylerVideos(List<Video> videos) {
+        RecyclerView recyclerView = view.findViewById(R.id.mainRecycler);
+        AdapterVideo adapterVideo = new AdapterVideo(videos, getContext(), true);
+        recyclerView.setAdapter(adapterVideo);
+
+        adapterVideo.setonItemClickListener(new AdapterVideo.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, String idVideo) {
+                Intent intent = new Intent(getContext(), ExibirVideoActivity.class);
+                intent.putExtra("idVideo", idVideo);
+                startActivity(intent);
+            }
+        });
     }
 
     private void liberarLayout() {
