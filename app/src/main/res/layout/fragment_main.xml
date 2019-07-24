@@ -83,7 +83,7 @@
                             android:layout_gravity="center"
                             android:layout_marginStart="20dp"
                             android:layout_weight="3"
-                            android:text="@string/videos"
+                            android:text="@string/novo"
                             android:textColor="@android:color/white" />
 
                         <TextView
