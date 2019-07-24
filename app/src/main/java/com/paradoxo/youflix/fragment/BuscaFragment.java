@@ -2,17 +2,18 @@ package com.paradoxo.youflix.fragment;
 
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -21,7 +22,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.paradoxo.youflix.ExibirVideoActivity;
+import com.paradoxo.youflix.activity.ExibirVideoActivity;
 import com.paradoxo.youflix.R;
 import com.paradoxo.youflix.adapter.AdapterVideo;
 import com.paradoxo.youflix.modelo.PaginaVideo;
@@ -30,13 +31,13 @@ import com.paradoxo.youflix.util.YTinfo;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 public class BuscaFragment extends Fragment {
 
     private View view;
     private Toolbar toolbar;
     private EditText buscaEditText;
-
 
     public BuscaFragment() {
     }
@@ -46,20 +47,9 @@ public class BuscaFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_busca, container, false);
 
         configurarToolbar();
-
         configurarEditTextBusca();
 
         return view;
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            Log.e("SEARC", "sim");
-        } else {
-            Log.e("SEARC", "NÂO");
-        }
     }
 
     private void configurarEditTextBusca() {
@@ -71,7 +61,6 @@ public class BuscaFragment extends Fragment {
                     return true;
                 } else {
                     new BuscaVideos().execute(v.getText().toString());
-                    Log.e("teclado", "execute");
                     return false;
                 }
             }
@@ -102,8 +91,7 @@ public class BuscaFragment extends Fragment {
 
     private void configurarToolbar() {
         toolbar = view.findViewById(R.id.buscaToolbar);
-        toolbar.inflateMenu(R.menu.menu_search);
-
+        toolbar.inflateMenu(R.menu.menu_busca);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -119,6 +107,7 @@ public class BuscaFragment extends Fragment {
         (view.findViewById(R.id.layoutLoad)).setVisibility(View.VISIBLE);
         (view.findViewById(R.id.layoutPrincipal)).setVisibility(View.GONE);
         (view.findViewById(R.id.layoutRecyler)).setVisibility(View.GONE);
+        esconderTeclado();
     }
 
     private void liberarLayoutRecycler() {
@@ -134,6 +123,15 @@ public class BuscaFragment extends Fragment {
         (view.findViewById(R.id.layoutLoad)).setVisibility(View.GONE);
     }
 
+    private void esconderTeclado() {
+        View view = Objects.requireNonNull(getActivity()).getCurrentFocus();
+        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (inputMethodManager != null) {
+            assert view != null;
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
     @SuppressLint("StaticFieldLeak")
     private class BuscaVideos extends AsyncTask<String, Void, List<Video>> {
 
@@ -141,14 +139,12 @@ public class BuscaFragment extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
             esconderLayout();
-
         }
 
         @Override
         protected List<Video> doInBackground(String... busca) {
             try {
                 return new YTinfo(getContext()).buscarVideosCanal(new PaginaVideo(), busca[0]).getVideos();
-
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
@@ -183,6 +179,7 @@ public class BuscaFragment extends Fragment {
             }
         });
     }
+
 
 
 }

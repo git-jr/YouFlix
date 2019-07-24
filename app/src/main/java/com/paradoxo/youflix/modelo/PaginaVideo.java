@@ -4,19 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PaginaVideo {
-    private List<String> tokenPagina = new ArrayList<>();     // Token numero de pagina que podemos pegar com uma busca pode ser usado para avança re trocar as paginas de vídeo (para voltar usar "atual menos anterior")
+    private List<String> tokenPagina = new ArrayList<>();
     private List<Video> videos = new ArrayList<>();
     private String idCanal;
-    private String pgToken = null; // Se isso não for nullo deverá ser usado como tpken na página na pesquisa
-    private String nextPageToken; // Token que pode ser usada para carregar a PRÓXIMA página de playlists
-    private String prevPageToken; // Token que pode ser usada para carregar a página ANTERIOR de playlists
+    private String pgToken = null;
+    private String nextPageToken;
+    private String prevPageToken;
     private String idPlayLiit;
-    private int numeroVideos; // Vai ser usado para saber se o botão "ver mais" será mostrado
-
-
-    public PaginaVideo(String nextPageToken) {
-        this.nextPageToken = nextPageToken;
-    }
+    private int numeroVideos;
 
     public PaginaVideo() {
 
@@ -24,10 +19,6 @@ public class PaginaVideo {
 
     public String getIdPlayLiit() {
         return idPlayLiit;
-    }
-
-    public int getNumeroVideos() {
-        return numeroVideos;
     }
 
     public void setNumeroVideos(int numeroVideos) {
@@ -46,10 +37,6 @@ public class PaginaVideo {
         this.nextPageToken = nextPageToken;
     }
 
-    public String getPrevPageToken() {
-        return prevPageToken;
-    }
-
     public void setPrevPageToken(String prevPageToken) {
         this.prevPageToken = prevPageToken;
     }
@@ -64,5 +51,13 @@ public class PaginaVideo {
 
     public void setVideos(Video video) {
         this.videos.add(video);
+    }
+
+    public int getNumeroVideos() {
+        return numeroVideos;
+    }
+
+    public String getPrevPageToken() {
+        return prevPageToken;
     }
 }

@@ -22,42 +22,6 @@ public class Video {
     public Video() {
     }
 
-    public Video(boolean rodape) {
-        this.rodape = rodape;
-    }
-
-    public boolean getRodape() {
-        return rodape;
-    }
-
-    public void setRodape(boolean rodape) {
-        this.rodape = rodape;
-    }
-
-    public boolean getProgresso() {
-        return progresso;
-    }
-
-    public void setProgresso(boolean progresso) {
-        this.progresso = progresso;
-    }
-
-    public Video(String id, String titulo, DateTime data, String id_resposta) {
-        this.id = id;
-        this.titulo = titulo;
-        this.data = data;
-    }
-
-    public Video(String id, String titulo, DateTime data) {
-        this.id = id;
-        this.titulo = titulo;
-        this.data = data;
-    }
-
-    public Video(String titulo, String string) {
-        this.titulo = titulo;
-    }
-
     public String getId() {
         return id;
     }
@@ -110,10 +74,6 @@ public class Video {
         this.qtdComentario = qtdComentario;
     }
 
-    public String getDuracao() {
-        return duracao;
-    }
-
     public void setDuracao(String duracao) {
         this.duracao = duracao;
     }
@@ -138,7 +98,27 @@ public class Video {
         this.status = status;
     }
 
+    public String getDuracao() {
+        return duracao;
+    }
+
     public String getStatus() {
         return status;
+    }
+
+    public boolean getRodape() {
+        return rodape;
+    }
+
+    public void setRodape(boolean rodape) {
+        this.rodape = rodape;
+    }
+
+    public boolean getProgresso() {
+        return progresso;
+    }
+
+    public void setProgresso(boolean progresso) {
+        this.progresso = progresso;
     }
 }

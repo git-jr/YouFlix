@@ -145,10 +145,11 @@
                 app:cornerRadius="5dp" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/ajudaTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:padding="8dp"
+                android:padding="12dp"
                 android:text="@string/precisa_de_ajuda"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                 android:textColor="@color/cinza_3"

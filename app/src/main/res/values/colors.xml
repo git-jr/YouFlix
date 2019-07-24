@@ -5,9 +5,6 @@
     <color name="colorAccent">#D81B60</color>
 
     <color name="colorOverlay0">#00000000</color>
-    <color name="colorOverlay1">#40000000</color>
-    <color name="colorOverlay2">#74000000</color>
-    <color name="colorOverlay3">#BF000000</color>
     <color name="colorOverlay6">#E8000000</color>
 
     <color name="cinza_2">#e6e6e6</color>
@@ -15,12 +12,11 @@
     <color name="cinza_4">#999999</color>
     <color name="cinza_5">#7f7f7f</color>
     <color name="cinza_6">#818181</color>
-    <color name="cinza_7">#787878</color>
-    <color name="cinza_7B">#737373</color>
-    <color name="cinza_8b">#333333</color>
-    <color name="cinza_8">#353535</color>
-    <color name="cinza_9">#454545</color>
-    <color name="cinza_10">#20201e</color>
+    <color name="cinza_7">#737373</color>
+    <color name="cinza_8">#333333</color>
+    <color name="cinza_9">#353535</color>
+    <color name="cinza_10">#454545</color>
+    <color name="cinza_11">#20201e</color>
     <color name="cinza_bg">#1a1a1a</color>
 
     <color name="vermelho_5">#e50913</color>

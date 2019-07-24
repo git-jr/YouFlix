@@ -10,20 +10,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/cinza_bg"
-        android:fitsSystemWindows="true">
+        app:elevation="0dp">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/buscaAppBar"
+            android:layout_marginTop="24dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+            <!-- Queria ter achado uma solução mais elegante para esse marginTop, mas tudo que tentei falhou-->
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/buscaToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/cinza_8"
+                android:background="@color/cinza_9"
                 android:minHeight="?attr/actionBarSize"
-                android:theme="?attr/actionBarTheme"
+                android:layout_gravity="center_horizontal"
                 app:navigationIcon="@drawable/ic_busca">
 
                 <LinearLayout

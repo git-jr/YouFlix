@@ -1,11 +1,12 @@
-package com.paradoxo.youflix;
+package com.paradoxo.youflix.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,6 +17,7 @@ import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
+import com.paradoxo.youflix.R;
 import com.paradoxo.youflix.modelo.Video;
 import com.paradoxo.youflix.util.YTinfo;
 import com.squareup.picasso.Picasso;
@@ -27,9 +29,8 @@ import org.joda.time.format.DateTimeFormatter;
 public class ExibirVideoActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
 
     public static final int COD_ERRO = 1000;
-    private static String API_KEY;
-    private String idVideo;
     private YouTubePlayerView youTubeView;
+    private String idVideo, apiKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,17 +74,15 @@ public class ExibirVideoActivity extends YouTubeBaseActivity implements YouTubeP
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         super.onMenuItemSelected(featureId, item);
-        Log.e("id click", String.valueOf(featureId));
         return true;
     }
 
     private void configurarPlayerYouTube() {
-        API_KEY = getString(R.string.api_key);
+        apiKey = getPrefString();
         youTubeView = findViewById(R.id.youtubePlayer);
 
         Intent intent = getIntent();
         idVideo = intent.getStringExtra("idVideo");
-        //idVideo = "wxThqXhBu68"; // Id de um vídeo de teste
     }
 
     @Override
@@ -99,7 +98,6 @@ public class ExibirVideoActivity extends YouTubeBaseActivity implements YouTubeP
         } else {
             String erro = getString(R.string.erro_carregar_player) + youTubeInitializationResult.toString();
             Toast.makeText(this, erro, Toast.LENGTH_SHORT).show();
-
         }
     }
 
@@ -122,7 +120,7 @@ public class ExibirVideoActivity extends YouTubeBaseActivity implements YouTubeP
     }
 
     private void inicializarVideo() {
-        youTubeView.initialize(API_KEY, this);
+        youTubeView.initialize(apiKey, this);
     }
 
     private void liberarLayoutLoad() {
@@ -148,37 +146,7 @@ public class ExibirVideoActivity extends YouTubeBaseActivity implements YouTubeP
         });
     }
 
-    @SuppressLint("StaticFieldLeak")
-    public class LoadDadosVideo extends AsyncTask<Void, Void, Video> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            liberarLayoutLoad();
-        }
-
-        @Override
-        protected Video doInBackground(Void... voids) {
-            return new YTinfo(getApplicationContext()).infoVideo(idVideo);
-        }
-
-        @Override
-        protected void onPostExecute(Video video) {
-            super.onPostExecute(video);
-            if (video.getTitulo() != null) {
-                preencherdadosVideoEmTela(video);
-                liberarLayoutVideo();
-            } else {
-                Log.e("erro", "Dados do vídeo não carregados");
-                liberarLayoutErro();
-            }
-        }
-    }
-
     private void preencherdadosVideoEmTela(Video video) {
-        Log.e("tag", video.getTitulo());
-        Log.e("tag", String.valueOf(video.getData()));
-
         TextView textViewTitulo = findViewById(R.id.txt_titulo);
         TextView textViewDescricao = findViewById(R.id.txt_descricao);
 
@@ -200,5 +168,37 @@ public class ExibirVideoActivity extends YouTubeBaseActivity implements YouTubeP
         Picasso.with(this).load(video.getThumbnail().getUrl()).into((ImageView) findViewById(R.id.thumbnailImageView));
 
         tempo_atras.setText(dtFormatada.print(dtVideo));
+    }
+
+    private String getPrefString() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        return sharedPreferences.getString("apiKey", "");
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    public class LoadDadosVideo extends AsyncTask<Void, Void, Video> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            liberarLayoutLoad();
+        }
+
+        @Override
+        protected Video doInBackground(Void... voids) {
+            return new YTinfo(getApplicationContext()).carregarTodasInformacoesVideo(idVideo);
+        }
+
+        @Override
+        protected void onPostExecute(Video video) {
+            super.onPostExecute(video);
+            if (video.getTitulo() != null) {
+                preencherdadosVideoEmTela(video);
+                liberarLayoutVideo();
+            } else {
+                liberarLayoutErro();
+            }
+        }
+
     }
 }

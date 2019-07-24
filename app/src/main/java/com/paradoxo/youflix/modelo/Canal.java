@@ -24,6 +24,22 @@ public class Canal {
         this.id = id;
     }
 
+    public String getBanner() {
+        return banner;
+    }
+
+    public void setBanner(String banner) {
+        this.banner = banner;
+    }
+
+    public void setIdChannelUpload(String idChannelUpload) {
+        this.idChannelUpload = idChannelUpload;
+    }
+
+    public String getIdChannelUpload() {
+        return idChannelUpload;
+    }
+
     public String getNome() {
         return nome;
     }
@@ -38,14 +54,6 @@ public class Canal {
 
     public void setAvatar(Thumbnail avatar) {
         this.avatar = avatar;
-    }
-
-    public String getBanner() {
-        return banner;
-    }
-
-    public void setBanner(String banner) {
-        this.banner = banner;
     }
 
     public String getDescricacao() {
@@ -72,11 +80,4 @@ public class Canal {
         this.qtdView = qtdView;
     }
 
-    public void setIdChannelUpload(String idChannelUpload) {
-        this.idChannelUpload = idChannelUpload;
-    }
-
-    public String getIdChannelUpload() {
-        return idChannelUpload;
-    }
 }

@@ -1,6 +1,5 @@
 package com.paradoxo.youflix.adapter;
 
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.paradoxo.youflix.ExibirVideoActivity;
+import com.paradoxo.youflix.activity.ExibirVideoActivity;
 import com.paradoxo.youflix.R;
 import com.paradoxo.youflix.modelo.PaginaVideo;
 import com.paradoxo.youflix.modelo.PlayList;
@@ -58,7 +57,7 @@ public class AdapterPlayList extends RecyclerView.Adapter {
         viewHolder.tituloPlayListTextView.setText(playList.getNome());
 
         RecyclerView recyclerView = viewHolder.recyclerView;
-        PaginaVideo pgVideoVP = new PaginaVideo(); // Inicializando
+        PaginaVideo pgVideoVP = new PaginaVideo();
         pgVideoVP.setIdPlayLiit(playList.getId());
 
         LoadVideos loadVideos = new LoadVideos(pgVideoVP, recyclerView);
@@ -84,7 +83,7 @@ public class AdapterPlayList extends RecyclerView.Adapter {
         @Override
         protected PaginaVideo doInBackground(Void... voids) {
             try {
-                return new YTinfo(context).listaVideos(pgVideoVP, false);
+                return new YTinfo(context).listarVideosDoCanal(pgVideoVP, false);
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
@@ -96,7 +95,6 @@ public class AdapterPlayList extends RecyclerView.Adapter {
             super.onPostExecute(paginaVideo);
 
             if (paginaVideo != null) {
-                // for (Video video : paginaVideo.getVideos()) {
                 AdapterVideo adapterVideo = new AdapterVideo(paginaVideo.getVideos(), context, false);
                 recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
                 recyclerView.setAdapter(adapterVideo);
@@ -109,7 +107,7 @@ public class AdapterPlayList extends RecyclerView.Adapter {
                         context.startActivity(intent);
                     }
                 });
-                //}
+
             }
         }
     }

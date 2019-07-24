@@ -5,24 +5,13 @@ import java.util.List;
 
 public class PaginaPlayList {
     private List<PlayList> playLists = new ArrayList<>();
-    private String nextPageToken; // Token que pode ser usada para carregar a PRÓXIMA página de playlists
-    private String prevPageToken; // Token que pode ser usada para carregar a página ANTERIOR de playlists
-    private int numeroPlays; // Vai ser usado para saber se o botão "ver mais" será mostrado
+    private String nextPageToken;
+    private String prevPageToken;
+    private int numeroPlays;
 
-    public PaginaPlayList(String nextPageToken) {
-        this.nextPageToken = nextPageToken;
-    }
 
     public PaginaPlayList() {
 
-    }
-
-    public int getNumeroPlays() {
-        return numeroPlays;
-    }
-
-    public void setNumeroPlays(int numeroPlays) {
-        this.numeroPlays = numeroPlays;
     }
 
     public List<PlayList> getPlayLists() {
@@ -31,6 +20,14 @@ public class PaginaPlayList {
 
     public void setPlayLists(PlayList playLists) {
         this.playLists.add(playLists);
+    }
+
+    public int getNumeroPlays() {
+        return numeroPlays;
+    }
+
+    public void setNumeroPlays(int numeroPlays) {
+        this.numeroPlays = numeroPlays;
     }
 
     public String getNextPageToken() {

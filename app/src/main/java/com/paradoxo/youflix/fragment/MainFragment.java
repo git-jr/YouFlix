@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +14,11 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.paradoxo.youflix.ExibirVideoActivity;
+import com.paradoxo.youflix.activity.ExibirVideoActivity;
 import com.paradoxo.youflix.R;
 import com.paradoxo.youflix.adapter.AdapterPlayList;
 import com.paradoxo.youflix.adapter.AdapterVideo;
@@ -39,25 +39,11 @@ import static com.paradoxo.youflix.enums.AbasEnum.NENHUMA_ABA;
 
 
 public class MainFragment extends Fragment {
-    private TextView videoTextView, sobreTextView, minhaListaTextView;
     private View view;
-    private AbasEnum abaAtual = AbasEnum.NENHUMA_ABA;
-
     private OnItemListenerMain lister;
+    private AbasEnum abaAtual = AbasEnum.NENHUMA_ABA;
+    private TextView videoTextView, sobreTextView, minhaListaTextView;
 
-    public interface OnItemListenerMain {
-        void onItemListerEscolherAba(AbasEnum abaAtual);
-    }
-
-
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnItemListenerMain) {
-            lister = (OnItemListenerMain) context;
-        }
-    }
 
     public MainFragment() {
     }
@@ -65,21 +51,25 @@ public class MainFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if(savedInstanceState!=null){
-            Log.e("SaveInsta",savedInstanceState.toString());
-        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_main, container, false);
 
         carregarBanner();
         carregarPlaylist();
         configurarBotoesToolbar();
-        
+
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnItemListenerMain) {
+            lister = (OnItemListenerMain) context;
+        }
     }
 
     private void configurarBotoesToolbar() {
@@ -99,7 +89,6 @@ public class MainFragment extends Fragment {
             }
         });
     }
-
 
     private void deslizarTextoVideo() {
         abaAtual = ABA_VIDEO;
@@ -176,90 +165,14 @@ public class MainFragment extends Fragment {
         loadVideos.execute();
     }
 
-    @SuppressLint("StaticFieldLeak")
-    private class LoadCanal extends AsyncTask<Void, Void, Canal> {
-        @Override
-        protected Canal doInBackground(Void... voids) {
-            return new YTinfo(getContext()).carregarBanner();
-        }
-
-        @Override
-        protected void onPostExecute(final Canal canal) {
-            super.onPostExecute(canal);
-            try {
-                Picasso.with(view.getContext()).load(canal.getBanner()).into((ImageView) view.findViewById(R.id.bannerPricipalImageView));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private class LoadPlaylists extends AsyncTask<Void, Void, PaginaPlayList> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            //esconderLayout();
-        }
-
-        @Override
-        protected PaginaPlayList doInBackground(Void... voids) {
-            try {
-                return new YTinfo(getContext()).listaPlayLists(new PaginaPlayList());
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(PaginaPlayList paginaPlayList) {
-            super.onPostExecute(paginaPlayList);
-
-            if (paginaPlayList != null) {
-                for (PlayList playList : paginaPlayList.getPlayLists()) {
-                    Log.e("Nome PlayList", playList.getNome());
-                    if (playList.getNome().contains("Vídeos com celular")) {
-                        paginaPlayList.getPlayLists().set(paginaPlayList.getPlayLists().size() - 1, playList); // Por questão de estética, essa playlist em específico será mostra por último
-                        paginaPlayList.getPlayLists().remove(paginaPlayList.getPlayLists().indexOf(playList)); // Por questão de estética, essa playlist em específico será mostra por último
-                        break;
-                    }
-                }
-
-                configurarRecyclerPlaylists(paginaPlayList.getPlayLists());
-            }
-
-            liberarLayout();
-        }
+    public interface OnItemListenerMain {
+        void onItemListerEscolherAba(AbasEnum abaAtual);
     }
 
     private void configurarRecyclerPlaylists(List<PlayList> playLists) {
         RecyclerView recyclerView = view.findViewById(R.id.mainRecycler);
         AdapterPlayList adapterPlayList = new AdapterPlayList(playLists, getContext());
         recyclerView.setAdapter(adapterPlayList);
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private class LoadVideos extends AsyncTask<Void, Void, PaginaVideo> {
-        @Override
-        protected PaginaVideo doInBackground(Void... voids) {
-            try {
-                return new YTinfo(getContext()).listaVideos(new PaginaVideo(), false);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(PaginaVideo paginaVideo) {
-            super.onPostExecute(paginaVideo);
-
-            if (paginaVideo != null) {
-                configurarRecylerVideos(paginaVideo.getVideos());
-
-            }
-        }
     }
 
     private void configurarRecylerVideos(List<Video> videos) {
@@ -286,5 +199,88 @@ public class MainFragment extends Fragment {
         (view.findViewById(R.id.layoutLoad)).setVisibility(View.VISIBLE);
         (view.findViewById(R.id.layoutPrincipal)).setVisibility(View.GONE);
     }
+
+    @SuppressLint("StaticFieldLeak")
+    private class LoadCanal extends AsyncTask<Void, Void, Canal> {
+
+        @Override
+        protected Canal doInBackground(Void... voids) {
+            return new YTinfo(getContext()).carregarBannerCanal();
+        }
+
+        @Override
+        protected void onPostExecute(final Canal canal) {
+            super.onPostExecute(canal);
+            try {
+                Picasso.with(view.getContext()).load(canal.getBanner()).into((ImageView) view.findViewById(R.id.bannerPricipalImageView));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class LoadPlaylists extends AsyncTask<Void, Void, PaginaPlayList> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            esconderLayout();
+        }
+
+        @Override
+        protected PaginaPlayList doInBackground(Void... voids) {
+            try {
+                return new YTinfo(getContext()).listarPlayListsDoCanal(new PaginaPlayList());
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(PaginaPlayList paginaPlayList) {
+            super.onPostExecute(paginaPlayList);
+
+            if (paginaPlayList != null) {
+                for (PlayList playList : paginaPlayList.getPlayLists()) {
+                    if (playList.getNome().contains("Vídeos com celular")) {
+                        paginaPlayList.getPlayLists().set(paginaPlayList.getPlayLists().size() - 1, playList);
+                        paginaPlayList.getPlayLists().remove(playList);
+                        // Por questão de estética, essa playlist em específico será exibida por último
+                        break;
+                    }
+                }
+                configurarRecyclerPlaylists(paginaPlayList.getPlayLists());
+            }
+            liberarLayout();
+        }
+
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class LoadVideos extends AsyncTask<Void, Void, PaginaVideo> {
+        @Override
+        protected PaginaVideo doInBackground(Void... voids) {
+            try {
+                return new YTinfo(getContext()).listarVideosDoCanal(new PaginaVideo(), false);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(PaginaVideo paginaVideo) {
+            super.onPostExecute(paginaVideo);
+
+            if (paginaVideo != null) {
+                configurarRecylerVideos(paginaVideo.getVideos());
+            }
+        }
+    }
+
+
 
 }

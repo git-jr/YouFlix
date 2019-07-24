@@ -1,8 +1,6 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -15,10 +13,6 @@
 
     <style name="Theme.AppCompat.Dark" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimaryDark">@color/cinza_bg</item>
-    </style>
-
-    <style name="Theme.Red" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimaryDark">@android:color/holo_red_dark</item>
     </style>
 
     <style name="AppTheme.Ripple">
@@ -45,9 +39,5 @@
     <style name="ProgressBarCustom" parent="Widget.AppCompat.ProgressBar">
         <item name="colorAccent">@color/vermelho_5</item>
     </style>
-
-    <style name="textoBold">
-        <![CDATA[<style name="TextBold">         <item name="android:textStyle">bold|italic</item>         <item name="android:textColor">#FFFFFF</item>     </style>]]></style>
-
 
 </resources>

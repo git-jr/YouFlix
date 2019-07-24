@@ -3,22 +3,26 @@ package com.paradoxo.youflix.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.fragment.app.Fragment;
 
 import com.paradoxo.youflix.R;
 import com.paradoxo.youflix.modelo.Canal;
 import com.paradoxo.youflix.util.YTinfo;
+
+import java.util.Objects;
 
 public class MaisFragment extends Fragment {
 
@@ -29,11 +33,23 @@ public class MaisFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_mais, container, false);
         configurarBotaoEntrar();
+        configurarBotaoAjuda();
 
         return view;
+    }
+
+    private void configurarBotaoAjuda() {
+        view.findViewById(R.id.ajudaTextView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentGitHub = new Intent(Intent.ACTION_VIEW);
+                intentGitHub.setData(Uri.parse("https://github.com/git-jr/YouFlix"));
+                startActivity(intentGitHub);
+            }
+        });
     }
 
     private void configurarBotaoEntrar() {
@@ -41,7 +57,6 @@ public class MaisFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 verificarDados();
-
             }
         });
     }
@@ -59,9 +74,8 @@ public class MaisFragment extends Fragment {
     }
 
     private void verificarDados() {
-
-        String apiKey = ((AppCompatEditText) view.findViewById(R.id.apiKeyEditText)).getText().toString();
-        String urlChannel = ((AppCompatEditText) view.findViewById(R.id.urlCanalEditText)).getText().toString();
+        String apiKey = Objects.requireNonNull(((AppCompatEditText) view.findViewById(R.id.apiKeyEditText)).getText()).toString();
+        String urlChannel = Objects.requireNonNull(((AppCompatEditText) view.findViewById(R.id.urlCanalEditText)).getText()).toString();
 
         String caminhoBase = "https://www.youtube.com/user/";
         if (apiKey.isEmpty() || urlChannel.isEmpty()) {
@@ -94,6 +108,21 @@ public class MaisFragment extends Fragment {
         mEditor.apply();
     }
 
+    private void entrar() {
+        liberarLayout();
+        listener.onItemListerStartInterface();
+    }
+
+    private void liberarLayout() {
+        (view.findViewById(R.id.layoutPrincipal)).setVisibility(View.VISIBLE);
+        (view.findViewById(R.id.layoutLoad)).setVisibility(View.GONE);
+    }
+
+    private void esconderLayout() {
+        (view.findViewById(R.id.layoutLoad)).setVisibility(View.VISIBLE);
+        (view.findViewById(R.id.layoutPrincipal)).setVisibility(View.GONE);
+    }
+
     @SuppressLint("StaticFieldLeak")
     public class VerificaDados extends AsyncTask<Void, Void, Boolean> {
         private String apiKey, urlCanal;
@@ -111,13 +140,9 @@ public class MaisFragment extends Fragment {
 
         @Override
         protected Boolean doInBackground(Void... voids) {
-
             Canal canal = new YTinfo(getContext()).verificarCanal(apiKey, urlCanal);
 
-            if (canal.getId() == null) {
-                Log.e("Id Channel", "Não localizado");
-            } else {
-                Log.e("Id Channel", canal.getId());
+            if (canal.getId() != null) {
                 setPrefString(apiKey, "apiKey");
                 setPrefString(canal.getId(), "idChannel");
                 setPrefString(urlCanal, "urlChannel");
@@ -131,7 +156,6 @@ public class MaisFragment extends Fragment {
         @Override
         protected void onPostExecute(Boolean passou) {
             super.onPostExecute(passou);
-
             if (!passou) {
                 notificarErroChave();
                 notificarErroUrl();
@@ -140,21 +164,6 @@ public class MaisFragment extends Fragment {
                 entrar();
             }
         }
-    }
-
-    private void entrar() {
-        liberarLayout();
-        listener.onItemListerStartInterface();
-    }
-
-    private void liberarLayout() {
-        (view.findViewById(R.id.layoutPrincipal)).setVisibility(View.VISIBLE);
-        (view.findViewById(R.id.layoutLoad)).setVisibility(View.GONE);
-    }
-
-    private void esconderLayout() {
-        (view.findViewById(R.id.layoutLoad)).setVisibility(View.VISIBLE);
-        (view.findViewById(R.id.layoutPrincipal)).setVisibility(View.GONE);
     }
 
 }

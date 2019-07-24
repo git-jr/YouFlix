@@ -8,6 +8,5 @@
                 android:endColor="@android:color/black"
                 android:type="linear" />
         </shape>
-
     </item>
 </selector>

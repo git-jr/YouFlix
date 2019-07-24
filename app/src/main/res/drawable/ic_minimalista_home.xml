@@ -4,23 +4,23 @@
     android:viewportWidth="1080"
     android:viewportHeight="1080">
     <path
-        android:fillColor="@color/cinza_7B"
+        android:fillColor="@color/cinza_7"
         android:fillType="evenOdd"
         android:pathData="M187.45,887.65l694.48,0l0,113.5l-694.48,0l0,-113.5l0,0z" />
     <path
-        android:fillColor="@color/cinza_7B"
+        android:fillColor="@color/cinza_7"
         android:fillType="evenOdd"
         android:pathData="M540.02,83.64l538.98,430.98l-72.6,88.87l-538.98,-430.97l72.6,-88.88l0,0z" />
     <path
-        android:fillColor="@color/cinza_7B"
+        android:fillColor="@color/cinza_7"
         android:fillType="evenOdd"
         android:pathData="M71.43,603.49l538.98,-430.97l-72.6,-88.88l-538.98,430.98l72.6,88.87l0,0z" />
     <path
-        android:fillColor="@color/cinza_7B"
+        android:fillColor="@color/cinza_7"
         android:fillType="evenOdd"
         android:pathData="M304.74,990.51l-59.71,-583.6l-115.42,11.56l59.71,583.6l115.42,-11.56l0,0z" />
     <path
-        android:fillColor="@color/cinza_7B"
+        android:fillColor="@color/cinza_7"
         android:fillType="evenOdd"
         android:pathData="M940.62,410.39l-59.71,583.61l-115.41,-11.56l59.7,-583.6l115.42,11.55l0,0z" />
 </vector>

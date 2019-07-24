@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -88,7 +87,6 @@ public class AdapterVideo extends RecyclerView.Adapter {
                 }
             });
         }
-
     }
 
 
@@ -96,4 +94,6 @@ public class AdapterVideo extends RecyclerView.Adapter {
     public int getItemCount() {
         return videos.size();
     }
+
+
 }

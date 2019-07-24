@@ -1,4 +1,4 @@
-package com.paradoxo.youflix;
+package com.paradoxo.youflix.activity;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
@@ -7,7 +7,6 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,13 +14,17 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.paradoxo.youflix.R;
 import com.paradoxo.youflix.enums.AbasEnum;
 import com.paradoxo.youflix.enums.GuiasEnum;
+import com.paradoxo.youflix.fragment.BuscaFragment;
 import com.paradoxo.youflix.fragment.DownloadFragment;
+import com.paradoxo.youflix.fragment.EmBreveFragment;
 import com.paradoxo.youflix.fragment.MainFragment;
 import com.paradoxo.youflix.fragment.MaisFragment;
-import com.paradoxo.youflix.fragment.EmBreveFragment;
-import com.paradoxo.youflix.fragment.BuscaFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.paradoxo.youflix.enums.GuiasEnum.GUIA_BUSCA;
 import static com.paradoxo.youflix.enums.GuiasEnum.GUIA_DOWNLOAD;
@@ -31,9 +34,9 @@ import static com.paradoxo.youflix.enums.GuiasEnum.GUIA_MAIS;
 
 public class MainActivity extends AppCompatActivity implements MaisFragment.OnItemListener, MainFragment.OnItemListenerMain {
 
+    private Fragment mainFragment, buscaFragment, emBreveFragment, downloadsFragment, maisFragment, fragmentAtual = null;
     TextView homeTextView, buscasTextView, emBreveTextView, downloadsTextView, maisTextView;
-    private Fragment mainFragment, buscaFragment, emBreveFragment, downloadsFragment, maisFragment;
-    private Fragment fragmentAtual = null;
+    List<GuiasEnum> pilhaFragmentos = new ArrayList<>();
 
     @SuppressLint("StaticFieldLeak")
     @Override
@@ -41,12 +44,7 @@ public class MainActivity extends AppCompatActivity implements MaisFragment.OnIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mainFragment = new MainFragment();
-        buscaFragment = new BuscaFragment();
-        emBreveFragment = new EmBreveFragment();
-        downloadsFragment = new DownloadFragment();
-        maisFragment = new MaisFragment();
-
+        inicializarFragments();
         inicializarBottomViewCustomizado();
 
         if (getPrefString("apiKey").isEmpty() || getPrefString("urlChannel").isEmpty()) {
@@ -58,12 +56,22 @@ public class MainActivity extends AppCompatActivity implements MaisFragment.OnIt
 
     }
 
+    private void inicializarFragments() {
+        mainFragment = new MainFragment();
+        buscaFragment = new BuscaFragment();
+        emBreveFragment = new EmBreveFragment();
+        downloadsFragment = new DownloadFragment();
+        maisFragment = new MaisFragment();
+    }
+
     private void inicializarBottomViewCustomizado() {
         homeTextView = findViewById(R.id.homeTextView);
         buscasTextView = findViewById(R.id.buscasTextView);
         emBreveTextView = findViewById(R.id.emBreveTextView);
         downloadsTextView = findViewById(R.id.downloadsTextView);
         maisTextView = findViewById(R.id.maisTextView);
+
+        // Preferi essa solução ao BottomView comum dentre outros fatores pela animação ficar mais fiel a original assim
     }
 
     private void iniciarInterface() {
@@ -73,21 +81,21 @@ public class MainActivity extends AppCompatActivity implements MaisFragment.OnIt
     }
 
     private void configurarBottomViewCustomizado() {
-
         homeTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 adicionarFragment(mainFragment, "MainFragment");
                 colorirBottomView(GUIA_HOME);
+                adicionarPilhaFragmentos(GUIA_HOME);
             }
         });
-
 
         buscasTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 adicionarFragment(buscaFragment, "BuscaFragment");
                 colorirBottomView(GUIA_BUSCA);
+                adicionarPilhaFragmentos(GUIA_BUSCA);
             }
         });
 
@@ -96,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements MaisFragment.OnIt
             public void onClick(View v) {
                 adicionarFragment(emBreveFragment, "EmBreveFragment");
                 colorirBottomView(GUIA_EM_BREVE);
+                adicionarPilhaFragmentos(GUIA_EM_BREVE);
             }
         });
 
@@ -104,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements MaisFragment.OnIt
             public void onClick(View v) {
                 adicionarFragment(downloadsFragment, "DownloadFragment");
                 colorirBottomView(GUIA_DOWNLOAD);
-
+                adicionarPilhaFragmentos(GUIA_DOWNLOAD);
             }
         });
 
@@ -113,30 +122,34 @@ public class MainActivity extends AppCompatActivity implements MaisFragment.OnIt
             public void onClick(View v) {
                 adicionarFragment(maisFragment, "MaisFragment");
                 colorirBottomView(GUIA_MAIS);
-
+                adicionarPilhaFragmentos(GUIA_MAIS);
             }
         });
 
         colorirBottomView(GUIA_HOME);
+        pilhaFragmentos.add(GUIA_HOME);
+    }
+
+    private void adicionarPilhaFragmentos(GuiasEnum guia) {
+        if (pilhaFragmentos != null && !pilhaFragmentos.contains(guia)) {
+            pilhaFragmentos.add(guia);
+        }
     }
 
     private void configurarTelaCheia() {
         getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         );
     }
 
     private void adicionarFragment(Fragment fragment, String tagFragmento) {
         if (getSupportFragmentManager().getFragments().contains(fragment)) {
-            Log.e("frag", "Já existe");
-
             if (fragmentAtual != null) {
                 getSupportFragmentManager().beginTransaction().hide(fragmentAtual).commit();
             }
             getSupportFragmentManager().beginTransaction().show(fragment).commit();
+
         } else {
-            Log.e("frag", "Ainda não existe");
             getSupportFragmentManager().beginTransaction().add(R.id.framentPrincipal, fragment, tagFragmento).addToBackStack(null).commit();
         }
 
@@ -148,32 +161,32 @@ public class MainActivity extends AppCompatActivity implements MaisFragment.OnIt
             homeTextView.setTextColor(Color.WHITE);
             homeTextView.getCompoundDrawables()[1].setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
         } else {
-            homeTextView.setTextColor(getResources().getColor(R.color.cinza_7B));
-            homeTextView.getCompoundDrawables()[1].setColorFilter(getResources().getColor(R.color.cinza_7B), PorterDuff.Mode.SRC_IN);
+            homeTextView.setTextColor(getResources().getColor(R.color.cinza_7));
+            homeTextView.getCompoundDrawables()[1].setColorFilter(getResources().getColor(R.color.cinza_7), PorterDuff.Mode.SRC_IN);
         }
 
         if (novaGuia == GUIA_BUSCA) {
             buscasTextView.setTextColor(Color.WHITE);
             buscasTextView.getCompoundDrawables()[1].setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
         } else {
-            buscasTextView.setTextColor(getResources().getColor(R.color.cinza_7B));
-            buscasTextView.getCompoundDrawables()[1].setColorFilter(getResources().getColor(R.color.cinza_7B), PorterDuff.Mode.SRC_IN);
+            buscasTextView.setTextColor(getResources().getColor(R.color.cinza_7));
+            buscasTextView.getCompoundDrawables()[1].setColorFilter(getResources().getColor(R.color.cinza_7), PorterDuff.Mode.SRC_IN);
         }
 
         if (novaGuia == GUIA_EM_BREVE) {
             emBreveTextView.setTextColor(Color.WHITE);
             emBreveTextView.getCompoundDrawables()[1].setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
         } else {
-            emBreveTextView.setTextColor(getResources().getColor(R.color.cinza_7B));
-            emBreveTextView.getCompoundDrawables()[1].setColorFilter(getResources().getColor(R.color.cinza_7B), PorterDuff.Mode.SRC_IN);
+            emBreveTextView.setTextColor(getResources().getColor(R.color.cinza_7));
+            emBreveTextView.getCompoundDrawables()[1].setColorFilter(getResources().getColor(R.color.cinza_7), PorterDuff.Mode.SRC_IN);
         }
 
         if (novaGuia == GUIA_DOWNLOAD) {
             downloadsTextView.setTextColor(Color.WHITE);
             downloadsTextView.getCompoundDrawables()[1].setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
         } else {
-            downloadsTextView.setTextColor(getResources().getColor(R.color.cinza_7B));
-            downloadsTextView.getCompoundDrawables()[1].setColorFilter(getResources().getColor(R.color.cinza_7B), PorterDuff.Mode.SRC_IN);
+            downloadsTextView.setTextColor(getResources().getColor(R.color.cinza_7));
+            downloadsTextView.getCompoundDrawables()[1].setColorFilter(getResources().getColor(R.color.cinza_7), PorterDuff.Mode.SRC_IN);
         }
 
         if (novaGuia == GUIA_MAIS) {
@@ -181,8 +194,8 @@ public class MainActivity extends AppCompatActivity implements MaisFragment.OnIt
             maisTextView.getCompoundDrawables()[1].setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
 
         } else {
-            maisTextView.setTextColor(getResources().getColor(R.color.cinza_7B));
-            maisTextView.getCompoundDrawables()[1].setColorFilter(getResources().getColor(R.color.cinza_7B), PorterDuff.Mode.SRC_IN);
+            maisTextView.setTextColor(getResources().getColor(R.color.cinza_7));
+            maisTextView.getCompoundDrawables()[1].setColorFilter(getResources().getColor(R.color.cinza_7), PorterDuff.Mode.SRC_IN);
 
         }
     }
@@ -218,6 +231,8 @@ public class MainActivity extends AppCompatActivity implements MaisFragment.OnIt
                 break;
             }
         }
+
+        // switch / case aqui ao invés de um if prepara o layout para adição de mais abas úteis
     }
 
     private void configurarListenerEscolhaAbas(final LinearLayout layoutEscolherAbar) {
@@ -250,4 +265,16 @@ public class MainActivity extends AppCompatActivity implements MaisFragment.OnIt
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        removerPilhaFragmentos();
+    }
+
+    private void removerPilhaFragmentos() {
+        if (pilhaFragmentos != null) {
+            colorirBottomView(pilhaFragmentos.get(pilhaFragmentos.size() - 2));
+            pilhaFragmentos.remove(pilhaFragmentos.get(pilhaFragmentos.size() - 1));
+        }
+    }
 }

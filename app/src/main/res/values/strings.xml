@@ -1,6 +1,4 @@
 <resources>
-    <string name="api_key">AIzaSyCcLnjFEqUlSfne5cDMAFxGcdZIYCh_0cY</string>
-
 
     <string name="app_name">YouFlix</string>
     <string name="inicio">Início</string>
@@ -11,19 +9,12 @@
     <string name="videos">Vídeos</string>
     <string name="sobre">Sobre</string>
     <string name="minha_lista">Minha lista</string>
-    <string name="title_activity_main2">Main2Activity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="videos_recentes">Vídeos recentes</string>
-    <string name="busque_por">Busque por série, filme genêro, etc.</string>
+    <string name="busque_por">Busque por série, filme, gênero, etc.</string>
     <string name="encontre_sua_historia">Encontre sua própria história.</string>
     <string name="place_buscas">Busque séries para assistir no caminho para o trabalho, filmes para descontrair ou gêneros favoritos.</string>
     <string name="nada_ainda">Nada aqui ainda</string>
-    <string name="erro_carregar_player">Erro ao inicialziar player de vídeo:</string>
+    <string name="erro_carregar_player">Erro ao inicializar player de vídeo:</string>
     <string name="place_descricao_video">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
     <string name="entrar">Entrar</string>
     <string name="digite_sua_chave_de_api">Digite sua chave de API</string>
@@ -33,10 +24,10 @@
     <string name="digite_uma_api_key_valida">Digite uma chave válida</string>
     <string name="tudo">Tudo</string>
     <string name="nao_temos_essa_opcao">Que pena... Não temos essa opção.</string>
-    <string name="tente_buscar_outro">Tente buscar outro filme, série,ator, diretor ou gênnero.</string>
+    <string name="tente_buscar_outro">Tente buscar outro filme, série,ator, diretor ou gênero.</string>
     <string name="filmes">Filmes</string>
     <string name="microfone">Microfone</string>
     <string name="fechar">Fechar</string>
-    <string name="erro_carregar_video">"\"Não foi possivel carregar o vídeo"\"</string>
+    <string name="erro_carregar_video">"\"Não foi possível carregar o vídeo"\"</string>
     <string name="tentar_novamente">Tentar novamente</string>
 </resources>

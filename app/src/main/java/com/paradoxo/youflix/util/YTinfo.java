@@ -21,14 +21,13 @@ import com.google.api.services.youtube.model.PlaylistListResponse;
 import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
 import com.google.api.services.youtube.model.Thumbnail;
+import com.google.api.services.youtube.model.ThumbnailDetails;
 import com.google.api.services.youtube.model.VideoListResponse;
 import com.paradoxo.youflix.modelo.Canal;
 import com.paradoxo.youflix.modelo.PaginaPlayList;
 import com.paradoxo.youflix.modelo.PaginaVideo;
 import com.paradoxo.youflix.modelo.PlayList;
 import com.paradoxo.youflix.modelo.Video;
-
-import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,19 +38,16 @@ public class YTinfo {
     private final JsonFactory jsonFactory = new JacksonFactory();
     private final HttpTransport httpTransport = new NetHttpTransport();
 
-    private static final long item_por_pg = 2;
-    private static String sha1 = "default";
-    private static String channelUpload = "UUYETxCTVSpVOc1TP5KP0pMg";// Canal Paradoxo: "UUB1knfRXbQLlmz2HrbdHO7Q";
-    private static String chave; // = "AIzaSyCcLnjFEqUlSfne5cDMAFxGcdZIYCh_0cY";//"AIzaSyAbGlNFbel8iAGoDPPNZZfVhM0Y02VFvcY";
-    private static String channelId; // = "UCYETxCTVSpVOc1TP5KP0pMg"; // Canal Paradoxo: "UCB1knfRXbQLlmz2HrbdHO7Q";
+    private static String channelUpload, chave, channelId;
+    private static final long ITEM_POR_PG = 10;
     private static String pacote = "default";
+    private static String sha1 = "default";
     private YouTube youtube;
     private Context context;
 
     public YTinfo(Context context) {
         this.context = context;
         carregarDadosRequsicao();
-
     }
 
     private void carregarDadosRequsicao() {
@@ -60,7 +56,7 @@ public class YTinfo {
         chave = getPrefString("apiKey");
     }
 
-    public Video infoVideo(String idVideo) {
+    public Video carregarTodasInformacoesVideo(String idVideo) {
         Video video = new Video();
         try {
             youtube = new YouTube.Builder(httpTransport, jsonFactory, new HttpRequestInitializer() {
@@ -78,57 +74,75 @@ public class YTinfo {
             List<com.google.api.services.youtube.model.Video> conteudoVideo = busca.getItems();
 
             if (conteudoVideo != null) {
-                video.setId(busca.getItems().get(0).getId());
-                video.setTitulo(busca.getItems().get(0).getSnippet().getTitle());
-                video.setQtdVisu(busca.getItems().get(0).getStatistics().getViewCount().toString());
-                video.setQtdLike(busca.getItems().get(0).getStatistics().getLikeCount().toString());
-                video.setQtdDeslike(busca.getItems().get(0).getStatistics().getDislikeCount().toString());
-                video.setQtdComentario(busca.getItems().get(0).getStatistics().getCommentCount().toString());
-                video.setData(busca.getItems().get(0).getSnippet().getPublishedAt());
-                video.setDescricao(busca.getItems().get(0).getSnippet().getDescription());
-                video.setStatus(busca.getItems().get(0).getStatus().getPrivacyStatus());
+                com.google.api.services.youtube.model.Video itens = busca.getItems().get(0);
+                video.setId(itens.getId());
+                video.setTitulo(itens.getSnippet().getTitle());
+                video.setQtdVisu(itens.getStatistics().getViewCount().toString());
+                video.setQtdLike(itens.getStatistics().getLikeCount().toString());
+                video.setQtdDeslike(itens.getStatistics().getDislikeCount().toString());
+                video.setQtdComentario(itens.getStatistics().getCommentCount().toString());
+                video.setData(itens.getSnippet().getPublishedAt());
+                video.setDescricao(itens.getSnippet().getDescription());
+                video.setStatus(itens.getStatus().getPrivacyStatus());
 
+                video.setDuracao(formatarDataVideo(itens.getContentDetails().getDuration()));
 
-                // Para conveter o formato da duração do vídeo que está em algo como "PT10H9M8S"
-                String duracao = busca.getItems().get(0).getContentDetails().getDuration().replace("PT", "")
-                        .replace("H", ":")
-                        .replace("M", ":")
-                        .replace("S", "");
-
-                if (duracao.indexOf(":") == duracao.length() - 1) { // Ajuste para exbição de durações com zeros no fim
-                    video.setDuracao(" " + duracao + "00 ");
-                } else {
-                    video.setDuracao(" " + duracao + " ");
+                ThumbnailDetails thumbnails = itens.getSnippet().getThumbnails();
+                if (thumbnails.get("standard") != null) {
+                    video.setThumbnail((Thumbnail) thumbnails.get("standard"));
+                } else if (thumbnails.get("maxers") != null) {
+                    video.setThumbnail((Thumbnail) thumbnails.get("maxers"));
+                } else if (thumbnails.get("default") != null) {
+                    video.setThumbnail((Thumbnail) thumbnails.get("default"));
                 }
 
-
-                String thumb;
-                try {
-                    thumb = ((Thumbnail) busca.getItems().get(0).getSnippet().getThumbnails().get("standard")).getUrl(); // Só pra testar um possivel erro casso não exitsa uma thumb desse tamanho
-                    video.setThumbnail((Thumbnail) busca.getItems().get(0).getSnippet().getThumbnails().get("standard"));
-                } catch (Exception e) { // Pro caso da miniatura ser de um vídeo privado, pegamos a miniatura padrão já que não existe uma de maxima qualidade
-                    try {
-                        thumb = ((Thumbnail) busca.getItems().get(0).getSnippet().getThumbnails().get("maxres")).getUrl(); // Só pra testar um possivel erro casso não exitsa uma thumb desse tamanho
-                        video.setThumbnail((Thumbnail) busca.getItems().get(0).getSnippet().getThumbnails().get("maxres"));
-                    } catch (Exception ex) {
-                        // Se os formatos de miniatura de vídeo acima não existirem vamos pegar o padrão mesmo
-                        video.setThumbnail((Thumbnail) busca.getItems().get(0).getSnippet().getThumbnails().get("default"));
-                    }
-                }
-
-                DateTime dataDoVideo = new DateTime(video.getData().getValue() + video.getData().getTimeZoneShift());
-
-                Cronos cronos = new Cronos();
-                cronos.tempo_depois(dataDoVideo);
             }
         } catch (Exception e) {
-            Log.e("TAG", "Erro ao carregar vídeo");
             e.printStackTrace();
         }
         return video;
     }
 
-    public Canal carregarBanner() {
+    private Video carregarTituloEThumbanilVideo(String idVideo) {
+        Video video = new Video();
+        try {
+            youtube = new YouTube.Builder(httpTransport, jsonFactory, new HttpRequestInitializer() {
+                public void initialize(HttpRequest request) {
+                    request.getHeaders().set("X-Android-Package", pacote);
+                    request.getHeaders().set("X-Android-Cert", sha1);
+                }
+            }).setApplicationName(pacote).build();
+
+            YouTube.Videos.List query = youtube.videos().list("id,snippet");
+            query.setFields("items(id,snippet/title,snippet/thumbnails)");
+            query.setId(idVideo);
+            query.setKey(chave);
+
+            VideoListResponse busca = query.execute();
+            List<com.google.api.services.youtube.model.Video> conteudoVideo = busca.getItems();
+
+            if (conteudoVideo != null) {
+                com.google.api.services.youtube.model.Video itens = busca.getItems().get(0);
+                video.setId(itens.getId());
+                video.setTitulo(itens.getSnippet().getTitle());
+
+                ThumbnailDetails thumbnails = itens.getSnippet().getThumbnails();
+                if (thumbnails.get("standard") != null) {
+                    video.setThumbnail((Thumbnail) thumbnails.get("standard"));
+                } else if (thumbnails.get("maxers") != null) {
+                    video.setThumbnail((Thumbnail) thumbnails.get("maxers"));
+                } else if (thumbnails.get("default") != null) {
+                    video.setThumbnail((Thumbnail) thumbnails.get("default"));
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return video;
+    }
+
+    public Canal carregarBannerCanal() {
         Canal canal = new Canal();
         try {
             youtube = new YouTube.Builder(httpTransport, jsonFactory, new HttpRequestInitializer() {
@@ -148,10 +162,8 @@ public class YTinfo {
 
             if (conteudoVideo != null) {
                 canal.setBanner(busca.getItems().get(0).getBrandingSettings().getImage().getBannerTvHighImageUrl());
-
             }
         } catch (Exception e) {
-            Log.e("TAG", "Erro ao carregar dados do canal");
             e.printStackTrace();
         }
         return canal;
@@ -170,12 +182,9 @@ public class YTinfo {
             YouTube.Channels.List search = youtube.channels().list("snippet, contentDetails");
             search.setFields("items(id,contentDetails/relatedPlaylists/uploads)");
             search.setForUsername(idCanal);
-
-
             search.setKey(apiKey);
 
             ChannelListResponse busca = search.execute();
-
             List<Channel> items = busca.getItems();
 
             if (!items.isEmpty() && !items.get(0).getId().isEmpty()) {
@@ -192,15 +201,13 @@ public class YTinfo {
                 busca = search.execute();
                 items = busca.getItems();
 
-
                 if (!items.isEmpty() && !items.get(0).getId().isEmpty()) {
                     canal.setId(items.get(0).getId());
                     canal.setIdChannelUpload(items.get(0).getContentDetails().getRelatedPlaylists().getUploads());
                 } else {
                     canal.setId(null);
-                    // Esse canal provavelmente não existe
+                    // Esse canal não existe
                 }
-
 
             }
 
@@ -232,26 +239,21 @@ public class YTinfo {
         SearchListResponse busca = query.execute();
         List<SearchResult> listaVideos = busca.getItems();
 
-
-        if (listaVideos != null) { // Se existir resultados:
+        if (listaVideos != null) {
             for (SearchResult lv : listaVideos) {
                 Video video = new Video();
                 video.setId(lv.getId().getVideoId());
                 video.setTitulo(lv.getSnippet().getTitle());
 
-                String thumb;
-                try {
-                    thumb = ((Thumbnail) lv.getSnippet().getThumbnails().get("standard")).getUrl(); // Só pra testar um possivel erro casso não exitsa uma thumb desse tamanho
-                    video.setThumbnail((Thumbnail) lv.getSnippet().getThumbnails().get("standard"));
-                } catch (Exception e) { // Pro caso da miniatura ser de um vídeo privado, pegamos a miniatura padrão já que não existe uma de maxima qualidade
-                    try {
-                        thumb = ((Thumbnail) lv.getSnippet().getThumbnails().get("maxres")).getUrl(); // Só pra testar um possivel erro casso não exitsa uma thumb desse tamanho
-                        video.setThumbnail((Thumbnail) lv.getSnippet().getThumbnails().get("maxres"));
-                    } catch (Exception ex) {
-                        // Se os formatos de miniatura de vídeo acima não existirem vamos pegar o padrão mesmo
-                        video.setThumbnail((Thumbnail) lv.getSnippet().getThumbnails().get("default"));
-                    }
+                ThumbnailDetails thumbnails = lv.getSnippet().getThumbnails();
+                if (thumbnails.get("standard") != null) {
+                    video.setThumbnail((Thumbnail) thumbnails.get("standard"));
+                } else if (thumbnails.get("maxers") != null) {
+                    video.setThumbnail((Thumbnail) thumbnails.get("maxers"));
+                } else if (thumbnails.get("default") != null) {
+                    video.setThumbnail((Thumbnail) thumbnails.get("default"));
                 }
+
 
                 paginaVideo.setVideos(video);
             }
@@ -259,51 +261,7 @@ public class YTinfo {
         return paginaVideo;
     }
 
-    // Apenas Thumbanil e id
-    private Video infoVideoSimples(String idVideo) {
-        Video video = new Video();
-        try {
-            youtube = new YouTube.Builder(httpTransport, jsonFactory, new HttpRequestInitializer() {
-                public void initialize(HttpRequest request) {
-                    request.getHeaders().set("X-Android-Package", pacote);
-                    request.getHeaders().set("X-Android-Cert", sha1);
-                }
-            }).setApplicationName(pacote).build();
-
-            YouTube.Videos.List query = youtube.videos().list("id,snippet");
-            query.setFields("items(id,snippet/title,snippet/thumbnails)");
-            query.setId(idVideo);
-            query.setKey(chave);
-
-            VideoListResponse busca = query.execute();
-            List<com.google.api.services.youtube.model.Video> conteudoVideo = busca.getItems();
-
-            if (conteudoVideo != null) { // Se existir resultados:
-                video.setId(busca.getItems().get(0).getId());
-                video.setTitulo(busca.getItems().get(0).getSnippet().getTitle());
-
-                String thumb;
-                try {
-                    thumb = ((Thumbnail) busca.getItems().get(0).getSnippet().getThumbnails().get("standard")).getUrl(); // Só pra testar um possivel erro casso não exitsa uma thumb desse tamanho
-                    video.setThumbnail((Thumbnail) busca.getItems().get(0).getSnippet().getThumbnails().get("standard"));
-                } catch (Exception e) { // Pro caso da miniatura ser de um vídeo privado, pegamos a miniatura padrão já que não existe uma de maxima qualidade
-                    try {
-                        thumb = ((Thumbnail) busca.getItems().get(0).getSnippet().getThumbnails().get("maxres")).getUrl(); // Só pra testar um possivel erro casso não exitsa uma thumb desse tamanho
-                        video.setThumbnail((Thumbnail) busca.getItems().get(0).getSnippet().getThumbnails().get("maxres"));
-                    } catch (Exception ex) {
-                        // Se os formatos de miniatura de vídeo acima não existirem vamos pegar o padrão mesmo
-                        video.setThumbnail((Thumbnail) busca.getItems().get(0).getSnippet().getThumbnails().get("default"));
-                    }
-                }
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return video;
-    }
-
-    public PaginaPlayList listaPlayLists(PaginaPlayList paginaPlayList) throws IOException {
+    public PaginaPlayList listarPlayListsDoCanal(PaginaPlayList paginaPlayList) throws IOException {
         youtube = new YouTube.Builder(httpTransport, jsonFactory, new HttpRequestInitializer() {
             public void initialize(HttpRequest request) {
                 request.getHeaders().set("X-Android-Package", pacote);
@@ -313,29 +271,26 @@ public class YTinfo {
 
         YouTube.Playlists.List query = youtube.playlists().list("id,snippet");
         query.setFields("items(id,snippet/title)");
-        query.setChannelId(channelId); // Usando o ID de uploads do canal, que é obtido da mesma maneira que o id do canal através da própria  API em algum list
-        query.setMaxResults(item_por_pg);
+        query.setChannelId(channelId);
+        query.setMaxResults(ITEM_POR_PG);
         query.setKey(chave);
 
         PlaylistListResponse busca = query.execute();
-
         List<Playlist> listaPlays = busca.getItems();
 
-        if (listaPlays != null) { // Se existir resultados:
+        if (listaPlays != null) {
             for (Playlist p : listaPlays) {
                 PlayList playList = new PlayList();
                 playList.setId(p.getId());
                 playList.setNome(p.getSnippet().getTitle());
-                paginaPlayList.setPlayLists(playList); // Isso adiciona um item de playlist ao LIST de paginaPlayList
+                paginaPlayList.setPlayLists(playList);
             }
-        } else {
-            Log.e("TAG", "ERRO AO CARREGAR PLAYLIST");
         }
+
         return paginaPlayList;
     }
 
-    // Traz um obejto que contém uma lista dos IDs de vídeo daquela página e a identificação da próxima página
-    private PaginaVideo listaPgCanal(PaginaVideo paginaVideo, boolean recarregando) throws IOException {
+    private PaginaVideo carregarVideosDoCanalParcialmente(PaginaVideo paginaVideo, boolean carregandoProximaPagina) throws IOException {
         youtube = new YouTube.Builder(httpTransport, jsonFactory, new HttpRequestInitializer() {
             public void initialize(HttpRequest request) {
                 request.getHeaders().set("X-Android-Package", pacote);
@@ -344,60 +299,77 @@ public class YTinfo {
         }).setApplicationName(pacote).build();
 
         YouTube.PlaylistItems.List query = youtube.playlistItems().list("id,snippet");
-        query.setMaxResults(item_por_pg);
+        query.setMaxResults(ITEM_POR_PG);
         query.setKey(chave);
 
-        if (paginaVideo.getIdPlayLiit() != null) {  // Caso exista um id, significa que é uma consulta por Playlist específica
+        if (paginaVideo.getIdPlayLiit() != null) {
+            // Caso exista um id, significa que é uma consulta por Playlist específica
             query.setPlaylistId(paginaVideo.getIdPlayLiit());
-        } else { // Caso contrário vamos listar todos uploads do canal por padrão
-            query.setPlaylistId(channelUpload); // Aqui estamos usando o o ID de uploads do canal, que é obteido das mesma maneira que o id do canal
+        } else {
+            query.setPlaylistId(channelUpload);
+            // Caso contrário vamos listar todos os uploads mais recntes do canal
         }
 
 
-        if (recarregando) { // Caso sim, significa que a proxima página está sendo carregada
+        if (carregandoProximaPagina) {
             query.setPageToken(paginaVideo.getNextPageToken());
         }
 
         PlaylistItemListResponse busca = query.execute();
-
         List<PlaylistItem> listaVideos = busca.getItems();
 
         paginaVideo.setNumeroVideos(busca.getPageInfo().getTotalResults());
 
-
-        if (listaVideos != null) { // Se existir resultados:
-            paginaVideo.setNextPageToken(busca.getNextPageToken());  // Para carregar mais playlists precisamos ir para próxima página de buscas e para isso precisamos ter o proximo token armazenado sempre
-            paginaVideo.setPrevPageToken(busca.getPrevPageToken()); // Também estamos armazenando o token da página anterior
+        if (listaVideos != null) {
+            paginaVideo.setNextPageToken(busca.getNextPageToken());
+            paginaVideo.setPrevPageToken(busca.getPrevPageToken());
 
             for (PlaylistItem lv : listaVideos) {
                 Video video = new Video();
-                video.setId(lv.getSnippet().getResourceId().getVideoId()); // Só queremos o id mesmo por hora
+                video.setId(lv.getSnippet().getResourceId().getVideoId());
                 paginaVideo.setVideos(video);
             }
         }
         return paginaVideo;
     }
 
-    public PaginaVideo listaVideos(PaginaVideo paginaVideo, boolean recarregando) throws IOException {
-        List<Video> videosCanal = listaPgCanal(paginaVideo, recarregando).getVideos();
+    public PaginaVideo listarVideosDoCanal(PaginaVideo paginaVideo, boolean recarregando) throws IOException {
+        List<Video> videosCanal = carregarVideosDoCanalParcialmente(paginaVideo, recarregando).getVideos();
 
         List<Video> videosComInfo = new ArrayList<>();
         for (Video vC : videosCanal) {
-
-            if (vC.getId() == null) { // Para o caso de vídeos e playlists privadas
-                break; // Sai do ciclo e vai para o proximo
+            if (vC.getId() == null) {
+                break;
+                // Para o caso de vídeos e playlists privadas
             }
 
-            videosComInfo.add(infoVideoSimples(vC.getId()));
+            videosComInfo.add(carregarTituloEThumbanilVideo(vC.getId()));
 
-            if (videosComInfo.get(videosComInfo.size() - 1).getId() == null) { // Se por algum motivo houver algum vídeo nulo (como no caso da listagem de playlist) ele é removido
+            if (videosComInfo.get(videosComInfo.size() - 1).getId() == null) {
                 videosComInfo.remove(videosComInfo.size() - 1);
+                // Se por algum motivo houver algum vídeo nulo (como no caso da listagem de vídeos privados em playlists) ele é removido
             }
         }
 
         paginaVideo.setVideos(videosComInfo);
 
         return paginaVideo;
+    }
+
+
+    private String formatarDataVideo(String duracaoNormal) {
+        String duracaoFormatada = duracaoNormal.replace("PT", "")
+                .replace("H", ":")
+                .replace("M", ":")
+                .replace("S", "");
+
+        if (duracaoFormatada.indexOf(":") == duracaoFormatada.length() - 1) { // Ajuste para exbição de durações com zeros no fim
+            return (" " + duracaoFormatada + "00 ");
+        } else {
+            return (" " + duracaoFormatada + " ");
+        }
+
+        // Converte o formato da duração do vídeo de algo como "PT10H9M8S" para algo como "04:20"
     }
 
     private String getPrefString(String nomeShared) {
