@@ -29,7 +29,6 @@ import com.paradoxo.youflix.modelo.PaginaVideo;
 import com.paradoxo.youflix.modelo.PlayList;
 import com.paradoxo.youflix.modelo.Video;
 import com.paradoxo.youflix.util.YTinfo;
-import com.paradoxo.youflix.util.YTlist;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -50,14 +49,13 @@ public class MainFragment extends Fragment {
         void onItemListerEscolherAba(AbasEnum abaAtual);
     }
 
+
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnItemListenerMain) {
             lister = (OnItemListenerMain) context;
-
-        } else {
-            throw new ClassCastException();
         }
     }
 
@@ -67,6 +65,10 @@ public class MainFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(savedInstanceState!=null){
+            Log.e("SaveInsta",savedInstanceState.toString());
+        }
     }
 
     @Override
@@ -75,10 +77,8 @@ public class MainFragment extends Fragment {
 
         carregarBanner();
         carregarPlaylist();
-
         configurarBotoesToolbar();
-
-
+        
         return view;
     }
 
@@ -180,8 +180,7 @@ public class MainFragment extends Fragment {
     private class LoadCanal extends AsyncTask<Void, Void, Canal> {
         @Override
         protected Canal doInBackground(Void... voids) {
-            YTinfo YTinfo = new YTinfo();
-            return YTinfo.carregarBanner();
+            return new YTinfo(getContext()).carregarBanner();
         }
 
         @Override
@@ -206,7 +205,7 @@ public class MainFragment extends Fragment {
         @Override
         protected PaginaPlayList doInBackground(Void... voids) {
             try {
-                return YTlist.listaPlayLists(new PaginaPlayList(), false);
+                return new YTinfo(getContext()).listaPlayLists(new PaginaPlayList());
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
@@ -245,7 +244,7 @@ public class MainFragment extends Fragment {
         @Override
         protected PaginaVideo doInBackground(Void... voids) {
             try {
-                return YTlist.listaVideos(new PaginaVideo(), false);
+                return new YTinfo(getContext()).listaVideos(new PaginaVideo(), false);
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;

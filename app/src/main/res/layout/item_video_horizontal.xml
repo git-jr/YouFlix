@@ -14,7 +14,7 @@
         android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:background="@drawable/img_toolbar"
+        tools:background="@drawable/img_tools_video"
         tools:ignore="ContentDescription" />
 
 </com.google.android.material.card.MaterialCardView>

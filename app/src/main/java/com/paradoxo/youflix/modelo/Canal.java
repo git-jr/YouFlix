@@ -11,6 +11,7 @@ public class Canal {
 
     private String qtdInscrito;
     private String qtdView;
+    private String idChannelUpload;
 
     public Canal() {
     }
@@ -71,4 +72,11 @@ public class Canal {
         this.qtdView = qtdView;
     }
 
+    public void setIdChannelUpload(String idChannelUpload) {
+        this.idChannelUpload = idChannelUpload;
+    }
+
+    public String getIdChannelUpload() {
+        return idChannelUpload;
+    }
 }

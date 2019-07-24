@@ -16,7 +16,7 @@
             android:layout_width="120dp"
             android:layout_height="68dp"
             android:scaleType="centerCrop"
-            tools:background="@drawable/img_toolbar"
+            tools:background="@drawable/img_tools_video"
             tools:ignore="ContentDescription" />
 
         <TextView

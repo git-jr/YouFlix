@@ -18,7 +18,7 @@ import com.paradoxo.youflix.ExibirVideoActivity;
 import com.paradoxo.youflix.R;
 import com.paradoxo.youflix.modelo.PaginaVideo;
 import com.paradoxo.youflix.modelo.PlayList;
-import com.paradoxo.youflix.util.YTlist;
+import com.paradoxo.youflix.util.YTinfo;
 
 import java.io.IOException;
 import java.util.List;
@@ -66,7 +66,6 @@ public class AdapterPlayList extends RecyclerView.Adapter {
 
     }
 
-
     @Override
     public int getItemCount() {
         return playLists.size();
@@ -85,7 +84,7 @@ public class AdapterPlayList extends RecyclerView.Adapter {
         @Override
         protected PaginaVideo doInBackground(Void... voids) {
             try {
-                return YTlist.listaVideos(pgVideoVP, false);
+                return new YTinfo(context).listaVideos(pgVideoVP, false);
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;

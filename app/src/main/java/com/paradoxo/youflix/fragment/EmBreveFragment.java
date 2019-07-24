@@ -6,19 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.paradoxo.youflix.R;
 
-public class NadaAindaFragment extends Fragment {
-
+public class EmBreveFragment extends Fragment {
 
     private View view;
 
-    public NadaAindaFragment() {
+    public EmBreveFragment() {
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

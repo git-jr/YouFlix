@@ -5,15 +5,18 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,30 +26,47 @@ import com.paradoxo.youflix.R;
 import com.paradoxo.youflix.adapter.AdapterVideo;
 import com.paradoxo.youflix.modelo.PaginaVideo;
 import com.paradoxo.youflix.modelo.Video;
-import com.paradoxo.youflix.util.YTlist;
+import com.paradoxo.youflix.util.YTinfo;
 
 import java.io.IOException;
 import java.util.List;
 
-public class SearchFragment extends Fragment {
-
+public class BuscaFragment extends Fragment {
 
     private View view;
+    private Toolbar toolbar;
+    private EditText buscaEditText;
 
-    public SearchFragment() {
+
+    public BuscaFragment() {
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_search, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_busca, container, false);
 
         configurarToolbar();
 
-        ((EditText) view.findViewById(R.id.buscaEditText)).setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        configurarEditTextBusca();
+
+        return view;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            Log.e("SEARC", "sim");
+        } else {
+            Log.e("SEARC", "NÂO");
+        }
+    }
+
+    private void configurarEditTextBusca() {
+        buscaEditText = view.findViewById(R.id.buscaEditText);
+        buscaEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                Log.e("teclado", "teclado");
                 if (v.getText().toString().isEmpty()) {
                     return true;
                 } else {
@@ -57,13 +77,42 @@ public class SearchFragment extends Fragment {
             }
         });
 
-        return view;
+        buscaEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().replace(" ", "").isEmpty()) {
+                    toolbar.getMenu().getItem(0).setIcon(R.drawable.ic_mic);
+                    toolbar.getMenu().getItem(0).setTitle(getString(R.string.microfone));
+                } else {
+                    toolbar.getMenu().getItem(0).setIcon(R.drawable.ic_close);
+                    toolbar.getMenu().getItem(0).setTitle(getString(R.string.fechar));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 
     private void configurarToolbar() {
-        Toolbar toolbar = view.findViewById(R.id.buscaToolbar);
+        toolbar = view.findViewById(R.id.buscaToolbar);
         toolbar.inflateMenu(R.menu.menu_search);
 
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.mic && item.getTitle().toString().equals(getString(R.string.fechar))) {
+                    buscaEditText.getText().clear();
+                }
+                return false;
+            }
+        });
     }
 
     private void esconderLayout() {
@@ -98,8 +147,7 @@ public class SearchFragment extends Fragment {
         @Override
         protected List<Video> doInBackground(String... busca) {
             try {
-                Log.e("execute: ", busca[0]);
-                return YTlist.buscarVideosCanal(new PaginaVideo(), busca[0]).getVideos();
+                return new YTinfo(getContext()).buscarVideosCanal(new PaginaVideo(), busca[0]).getVideos();
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -135,6 +183,8 @@ public class SearchFragment extends Fragment {
             }
         });
     }
+
+
 }
 
 

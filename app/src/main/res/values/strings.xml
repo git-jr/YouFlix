@@ -34,4 +34,9 @@
     <string name="tudo">Tudo</string>
     <string name="nao_temos_essa_opcao">Que pena... Não temos essa opção.</string>
     <string name="tente_buscar_outro">Tente buscar outro filme, série,ator, diretor ou gênnero.</string>
+    <string name="filmes">Filmes</string>
+    <string name="microfone">Microfone</string>
+    <string name="fechar">Fechar</string>
+    <string name="erro_carregar_video">"\"Não foi possivel carregar o vídeo"\"</string>
+    <string name="tentar_novamente">Tentar novamente</string>
 </resources>

@@ -6,13 +6,11 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -42,11 +40,8 @@ public class ExibirVideoActivity extends YouTubeBaseActivity implements YouTubeP
         configurarBotaoPlay();
         configurarPlayerYouTube();
 
-
         LoadDadosVideo loadDadosVideo = new LoadDadosVideo();
         loadDadosVideo.execute();
-
-
 
     }
 
@@ -130,14 +125,41 @@ public class ExibirVideoActivity extends YouTubeBaseActivity implements YouTubeP
         youTubeView.initialize(API_KEY, this);
     }
 
+    private void liberarLayoutLoad() {
+        (findViewById(R.id.layoutLoad)).setVisibility(View.VISIBLE);
+        (findViewById(R.id.layoutPrincipal)).setVisibility(View.GONE);
+        (findViewById(R.id.layoutErro)).setVisibility(View.GONE);
+    }
+
+    private void liberarLayoutVideo() {
+        (findViewById(R.id.layoutLoad)).setVisibility(View.GONE);
+        (findViewById(R.id.layoutPrincipal)).setVisibility(View.VISIBLE);
+    }
+
+    private void liberarLayoutErro() {
+        (findViewById(R.id.layoutLoad)).setVisibility(View.GONE);
+        (findViewById(R.id.layoutErro)).setVisibility(View.VISIBLE);
+        (findViewById(R.id.conteudoMensagTextView)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoadDadosVideo loadDadosVideo = new LoadDadosVideo();
+                loadDadosVideo.execute();
+            }
+        });
+    }
 
     @SuppressLint("StaticFieldLeak")
     public class LoadDadosVideo extends AsyncTask<Void, Void, Video> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            liberarLayoutLoad();
+        }
+
         @Override
         protected Video doInBackground(Void... voids) {
-            YTinfo yTinfo = new YTinfo();
-
-            return yTinfo.infoVideo(idVideo);
+            return new YTinfo(getApplicationContext()).infoVideo(idVideo);
         }
 
         @Override
@@ -145,8 +167,10 @@ public class ExibirVideoActivity extends YouTubeBaseActivity implements YouTubeP
             super.onPostExecute(video);
             if (video.getTitulo() != null) {
                 preencherdadosVideoEmTela(video);
+                liberarLayoutVideo();
             } else {
                 Log.e("erro", "Dados do vídeo não carregados");
+                liberarLayoutErro();
             }
         }
     }

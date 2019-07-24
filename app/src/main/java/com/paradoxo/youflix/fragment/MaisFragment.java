@@ -22,18 +22,15 @@ import com.paradoxo.youflix.util.YTinfo;
 
 public class MaisFragment extends Fragment {
 
-
     private View view;
     private OnItemListener listener;
 
     public MaisFragment() {
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_mais, container, false);
-
         configurarBotaoEntrar();
 
         return view;
@@ -58,8 +55,6 @@ public class MaisFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof OnItemListener) {
             listener = (OnItemListener) context;
-        } else {
-            throw new ClassCastException();
         }
     }
 
@@ -92,7 +87,6 @@ public class MaisFragment extends Fragment {
         view.findViewById(R.id.urlInvalidoTextView).setVisibility(View.VISIBLE);
     }
 
-
     private void setPrefString(String texto, String nomeShared) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
         SharedPreferences.Editor mEditor = sharedPreferences.edit();
@@ -118,8 +112,7 @@ public class MaisFragment extends Fragment {
         @Override
         protected Boolean doInBackground(Void... voids) {
 
-            YTinfo yTinfo = new YTinfo();
-            Canal canal = yTinfo.verificarCanal(apiKey, urlCanal);
+            Canal canal = new YTinfo(getContext()).verificarCanal(apiKey, urlCanal);
 
             if (canal.getId() == null) {
                 Log.e("Id Channel", "Não localizado");
@@ -128,6 +121,7 @@ public class MaisFragment extends Fragment {
                 setPrefString(apiKey, "apiKey");
                 setPrefString(canal.getId(), "idChannel");
                 setPrefString(urlCanal, "urlChannel");
+                setPrefString(canal.getIdChannelUpload(), "channelUpload");
                 return true;
             }
 

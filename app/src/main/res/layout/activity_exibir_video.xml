@@ -7,10 +7,59 @@
     android:background="@color/cinza_bg"
     android:orientation="vertical">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <LinearLayout
+        android:id="@+id/layoutErro"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/cinza_bg">
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tituloMensagTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/erro_carregar_video"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/conteudoMensagTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_vertical_margin"
+            android:text="@string/tentar_novamente"
+            android:textColor="@color/cinza_3"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutLoad"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:visibility="gone">
+
+        <ProgressBar
+            style="@style/ProgressBarCustom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:theme="@style/ProgressBarCustom" />
+
+    </LinearLayout>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@id/layoutPrincipal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/cinza_bg"
+        android:visibility="gone">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBar"
@@ -45,11 +94,11 @@
                         android:layout_height="match_parent"
                         android:background="@color/cinza_bg"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/img_toolbar"
+                        android:src="@color/cinza_bg"
                         android:visibility="visible"
                         app:layout_collapseMode="parallax"
                         tools:ignore="ContentDescription"
-                        tools:src="@drawable/img_toolbar"
+                        tools:src="@drawable/img_tools_video"
                         tools:visibility="visible" />
 
                     <View
@@ -102,7 +151,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:text="Sherlock"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textColor="@android:color/white"
                     android:textSize="22sp"
@@ -125,9 +173,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="Testo de tamnho teste"
                         android:textColor="@color/cinza_5"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        tools:text="25-05-12 04:20" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -149,9 +197,9 @@
                         android:id="@+id/numero_visu"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Testo de tamnho teste"
                         android:textColor="@color/cinza_5"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        tools:text="100.0000" />
 
                     <ImageButton
                         android:layout_width="18dp"
@@ -166,10 +214,10 @@
                         android:id="@+id/numero_like"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="101"
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                         android:textColor="@color/cinza_5"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        tools:text="42" />
 
 
                     <ImageButton
@@ -179,16 +227,17 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginEnd="4dp"
                         android:layout_marginRight="4dp"
-                        android:background="@drawable/ic_deslike" />
+                        android:background="@drawable/ic_deslike"
+                        tools:ignore="ContentDescription" />
 
                     <TextView
                         android:id="@+id/numero_deslike"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="101"
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                         android:textColor="@color/cinza_5"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        tools:text="42" />
 
                 </LinearLayout>
 
@@ -198,10 +247,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
                     android:autoLink="all"
-                    android:text="@string/place_descricao_video"
                     android:textColor="@color/cinza_2"
                     android:textColorLink="@color/cinza_8"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    tools:text="@string/place_descricao_video" />
 
 
             </LinearLayout>
