@@ -2,7 +2,7 @@
 YouFlix é um aplicativo feito para meu portfólio e aprendizado;
 O App possui a interface do app da empresa Netflix e lista o conteúdo de um canal do YouTube de acordo com os dados inserido pelo usuário.
 
-<img src="https://miro.medium.com/max/700/1*nmFSvtQ717XoBb19wKDZVw.png" alt="Comparação tela 1" width="600"> 
+<img src="https://miro.medium.com/max/700/1*ku5lArpD2Ou1mhbOYxt4LQ.png" alt="Comparação tela 1" width="600"> 
 
 
 # Objetivo
