@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,9 @@ import com.paradoxo.youflix.R;
 import com.paradoxo.youflix.modelo.Canal;
 import com.paradoxo.youflix.util.YTinfo;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public class MaisFragment extends Fragment {
@@ -77,15 +81,17 @@ public class MaisFragment extends Fragment {
         String apiKey = Objects.requireNonNull(((AppCompatEditText) view.findViewById(R.id.apiKeyEditText)).getText()).toString();
         String urlChannel = Objects.requireNonNull(((AppCompatEditText) view.findViewById(R.id.urlCanalEditText)).getText()).toString();
 
-        String caminhoBase = "https://www.youtube.com/user/";
+        String caminhoBase = "https://www.youtube.com/";
+
         if (apiKey.isEmpty() || urlChannel.isEmpty()) {
             notificarErroChave();
             notificarErroUrl();
 
         } else if (!Patterns.WEB_URL.matcher(urlChannel).matches() || !urlChannel.contains(caminhoBase)) {
             notificarErroUrl();
+
         } else {
-            VerificaDados verificaDados = new VerificaDados(apiKey, urlChannel.replace(caminhoBase, ""));
+            VerificaDados verificaDados = new VerificaDados(apiKey, String.valueOf(urlChannel.split("/")[urlChannel.split("/").length - 1]));
             verificaDados.execute();
         }
 
